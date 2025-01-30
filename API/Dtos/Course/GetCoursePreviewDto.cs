@@ -11,5 +11,7 @@ namespace API.Dtos.Course
         public int PriceFull { get; set; }
         public int PriceMonthly { get; set; }
         public List<GetSectionPreviewDto> Sections { get; set; }
+        public string CreatedBy { get; set; }
+        public bool IsActive { get; set; }
     }
 }
