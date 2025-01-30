@@ -51,8 +51,17 @@ namespace API.Repositories.Implementation
         {
             var section = _mapper.Map<Section>(newSection);
 
-            section.Id = _context.Sections.Max(c => c.Id) + 1;
+            section.Id = _context.Sections.Any() ? _context.Sections.Max(c => c.Id) + 1 : 1;
             await _context.Sections.AddAsync(section);
+            await _context.SaveChangesAsync();
+
+            var course = await _context.Courses.FirstOrDefaultAsync(c => c.Id == newSection.CourseId);
+            if (course == null)
+            {
+                return NotFoundResult<GetSectionDto>("Course not found.");
+            }
+
+            course.Duration += 1;
             await _context.SaveChangesAsync();
 
             var user = await _userManager.FindByNameAsync(username);
@@ -193,6 +202,14 @@ namespace API.Repositories.Implementation
                 var dbSection = await _context.Sections.Include(s => s.SectionLessons).FirstOrDefaultAsync(s => s.Id == id);
                 if (dbSection == null) return new Result<bool> { IsSuccess = false, ErrorMessage = "Section with the provided ID not found." };
 
+                var course = await _context.Courses.FirstOrDefaultAsync(c => c.Id == dbSection.CourseId);
+                if (course == null)
+                {
+                    return new Result<bool> { IsSuccess = false, ErrorMessage = "Associated course not found." };
+                }
+
+                course.Duration -= 1;
+                
                 var lessonIds = dbSection.SectionLessons.Select(sl => sl.LessonId).ToList();
                 _context.Sections.Remove(dbSection);
 

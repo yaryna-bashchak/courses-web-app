@@ -61,8 +61,8 @@ namespace API.Controllers
         {
             var username = User.Identity.Name ?? "";
 
-            if (newCourse.Duration <= 0 || newCourse.PriceFull <= 0 || newCourse.PriceMonthly <= 0)
-                return BadRequest("Duration, full price and price monthly must be greater than zero.");
+            if (newCourse.PriceFull <= 0 || newCourse.PriceMonthly <= 0)
+                return BadRequest("Full price and section price must be greater than zero.");
 
             var result = await _coursesRepository.AddCourse(newCourse, username);
 
@@ -80,8 +80,8 @@ namespace API.Controllers
         {
             var username = User.Identity.Name ?? "";
 
-            if (updatedCourse.Duration <= 0 || updatedCourse.PriceFull <= 0 || updatedCourse.PriceMonthly <= 0)
-                return BadRequest("Duration, full price and price monthly must be greater than zero.");
+            if (updatedCourse.PriceFull <= 0 || updatedCourse.PriceMonthly <= 0)
+                return BadRequest("Full price and section price must be greater than zero.");
 
             var result = await _coursesRepository.UpdateCourse(id, updatedCourse, username);
 
