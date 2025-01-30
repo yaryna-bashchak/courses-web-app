@@ -25,7 +25,7 @@ namespace API.Services
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Email, user.Email),
+                // new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Name, user.UserName),
             };
 
@@ -33,6 +33,12 @@ namespace API.Services
             foreach (var role in roles)
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+
+            var userClaims = await _userManager.GetClaimsAsync(user);
+            foreach (var claim in userClaims)
+            {
+                claims.Add(new Claim(claim.Type, claim.Value));
             }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWTSettings:TokenKey"]));

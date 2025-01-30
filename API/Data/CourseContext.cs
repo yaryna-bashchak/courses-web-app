@@ -17,9 +17,21 @@ namespace API.Data
 
             modelBuilder.Entity<IdentityRole>()
                 .HasData(
-                    new IdentityRole { Name = "Member", NormalizedName = "MEMBER" },
-                    new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" }
+                    new IdentityRole { Id = "1", Name = "Member", NormalizedName = "MEMBER" },
+                    new IdentityRole { Id = "2", Name = "Teacher", NormalizedName = "TEACHER" },
+                    new IdentityRole { Id = "3", Name = "Admin", NormalizedName = "ADMIN" }
                 );
+
+            modelBuilder.Entity<IdentityRoleClaim<string>>().HasData(
+                new IdentityRoleClaim<string> { Id = 1, RoleId = "1", ClaimType = "Permission", ClaimValue = "BasicAccess" },
+
+                new IdentityRoleClaim<string> { Id = 2, RoleId = "2", ClaimType = "Permission", ClaimValue = "BasicAccess" },
+                new IdentityRoleClaim<string> { Id = 3, RoleId = "2", ClaimType = "Permission", ClaimValue = "ManageCourses" },
+
+                new IdentityRoleClaim<string> { Id = 4, RoleId = "3", ClaimType = "Permission", ClaimValue = "BasicAccess" },
+                new IdentityRoleClaim<string> { Id = 5, RoleId = "3", ClaimType = "Permission", ClaimValue = "ManageCourses" },
+                new IdentityRoleClaim<string> { Id = 6, RoleId = "3", ClaimType = "Permission", ClaimValue = "AdminAccess" }
+            );
 
             modelBuilder.Entity<LessonKeyword>()
                 .HasKey(lk => new { lk.LessonId, lk.KeywordId });

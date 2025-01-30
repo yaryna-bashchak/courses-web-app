@@ -16,5 +16,7 @@ namespace API.Entities
         public string ImgUrl { get; set; }
         public string PublicId { get; set; }
         public List<Section> Sections { get; set; }
+        public string CreatedBy { get; set; }
+        public bool IsActive { get; set; } = true;
     }
 }
