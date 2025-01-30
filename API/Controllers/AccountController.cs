@@ -1,3 +1,4 @@
+using API.Data;
 using API.Dtos.Account;
 using API.Entities;
 using API.Services;
@@ -10,11 +11,13 @@ namespace API.Controllers
     public class AccountController : BaseApiController
     {
         private readonly UserManager<User> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly TokenService _tokenService;
-        public AccountController(UserManager<User> userManager, TokenService tokenService)
+        public AccountController(UserManager<User> userManager, TokenService tokenService, RoleManager<IdentityRole> roleManager)
         {
             _tokenService = tokenService;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         [HttpPost("login")]
@@ -24,18 +27,23 @@ namespace API.Controllers
             if (user == null || !await _userManager.CheckPasswordAsync(user, loginDto.Password))
                 return Unauthorized();
 
+            var roles = await _userManager.GetRolesAsync(user);
+            var userClaims = await _userManager.GetClaimsAsync(user);
+
             return new UserDto
             {
-                Email = user.Email,
+                // Email = user.Email,
                 Username = user.UserName,
-                Token = await _tokenService.GenerateToken(user)
+                Token = await _tokenService.GenerateToken(user),
+                Roles = roles.ToList(),
+                Claims = userClaims.Select(c => $"{c.Type}: {c.Value}").ToList()
             };
         }
 
         [HttpPost("register")]
         public async Task<ActionResult> Register(RegisterDto registerDto)
         {
-            var user = new User { UserName = registerDto.Username, Email = registerDto.Email };
+            var user = new User { UserName = registerDto.Username/*, Email = registerDto.Email*/ };
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
 
@@ -49,7 +57,14 @@ namespace API.Controllers
                 return ValidationProblem();
             }
 
-            await _userManager.AddToRoleAsync(user, "Member");
+            if (registerDto.IsTeacher)
+            {
+                await DbInitializer.AssignRoleWithClaimsAsync(_userManager, _roleManager, user, "Teacher");
+            }
+            else
+            {
+                await DbInitializer.AssignRoleWithClaimsAsync(_userManager, _roleManager, user, "Member");
+            }
 
             return StatusCode(201);
         }
@@ -60,11 +75,16 @@ namespace API.Controllers
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
 
+            var roles = await _userManager.GetRolesAsync(user);
+            var userClaims = await _userManager.GetClaimsAsync(user);
+
             return new UserDto
             {
-                Email = user.Email,
+                // Email = user.Email,
                 Username = user.UserName,
-                Token = await _tokenService.GenerateToken(user)
+                Token = await _tokenService.GenerateToken(user),
+                Roles = roles.ToList(),
+                Claims = userClaims.Select(c => $"{c.Type}: {c.Value}").ToList()
             };
         }
     }

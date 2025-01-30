@@ -55,9 +55,9 @@ namespace API.Controllers
             return result.Data;
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "ManageCourses")]
         [HttpPost]
-        public async Task<ActionResult<GetCourseDto>> AddLesson(AddCourseDto newCourse)
+        public async Task<ActionResult<GetCourseDto>> AddCourse(AddCourseDto newCourse)
         {
             var username = User.Identity.Name ?? "";
 
@@ -74,9 +74,9 @@ namespace API.Controllers
             return result.Data;
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "ManageCourses")]
         [HttpPut("{id}")]
-        public async Task<ActionResult<GetCourseDto>> UpdateLesson(int id, UpdateCourseDto updatedCourse)
+        public async Task<ActionResult<GetCourseDto>> UpdateCourse(int id, UpdateCourseDto updatedCourse)
         {
             var username = User.Identity.Name ?? "";
 
@@ -94,9 +94,9 @@ namespace API.Controllers
             return result.Data;
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "ManageCourses")]
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteLesson(int id)
+        public async Task<ActionResult> DeleteCourse(int id)
         {
             var result = await _coursesRepository.DeleteCourse(id);
 

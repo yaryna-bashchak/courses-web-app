@@ -46,7 +46,7 @@ namespace API.Controllers
             return result.Data;
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "ManageCourses")]
         [HttpPost]
         public async Task<ActionResult<GetTestDto>> AddTest(/*[FromForm]*/ AddTestDto newTest)
         {
@@ -61,7 +61,7 @@ namespace API.Controllers
             return result.Data;
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "ManageCourses")]
         [HttpPut("{id}")]
         public async Task<ActionResult<GetTestDto>> UpdateTest(int id, /*[FromForm]*/ UpdateTestDto updatedTest)
         {
@@ -75,7 +75,7 @@ namespace API.Controllers
             return result.Data;
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "ManageCourses")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTest(int id)
         {
