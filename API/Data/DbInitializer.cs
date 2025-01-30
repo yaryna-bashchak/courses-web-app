@@ -2887,27 +2887,27 @@ namespace API.Data
                     {
                         new() {
                             Number = 1,
-                            Title = "Місяць 1",
+                            Title = "Розділ 1",
                         },
                         new() {
                             Number = 2,
-                            Title = "Місяць 2",
+                            Title = "Розділ 2",
                         },
                         new() {
                             Number = 3,
-                            Title = "Місяць 3",
+                            Title = "Розділ 3",
                         },
                         new() {
                             Number = 4,
-                            Title = "Місяць 4",
+                            Title = "Розділ 4",
                         },
                         new() {
                             Number = 5,
-                            Title = "Місяць 5",
+                            Title = "Розділ 5",
                         },
                         new() {
                             Number = 6,
-                            Title = "Місяць 6",
+                            Title = "Розділ 6",
                         },
                     },
                 },
@@ -2922,19 +2922,19 @@ namespace API.Data
                     {
                         new() {
                             Number = 1,
-                            Title = "Місяць 1",
+                            Title = "Розділ 1",
                         },
                         new() {
                             Number = 2,
-                            Title = "Місяць 2",
+                            Title = "Розділ 2",
                         },
                         new() {
                             Number = 3,
-                            Title = "Місяць 3",
+                            Title = "Розділ 3",
                         },
                         new() {
                             Number = 4,
-                            Title = "Місяць 4",
+                            Title = "Розділ 4",
                         },
                     },
                 },
@@ -2949,15 +2949,15 @@ namespace API.Data
                     {
                         new() {
                             Number = 1,
-                            Title = "Місяць 1",
+                            Title = "Розділ 1",
                         },
                         new() {
                             Number = 2,
-                            Title = "Місяць 2",
+                            Title = "Розділ 2",
                         },
                         new() {
                             Number = 3,
-                            Title = "Місяць 3",
+                            Title = "Розділ 3",
                         },
                     },
                 },
@@ -2972,15 +2972,15 @@ namespace API.Data
                     {
                         new() {
                             Number = 1,
-                            Title = "Місяць 1",
+                            Title = "Розділ 1",
                         },
                         new() {
                             Number = 2,
-                            Title = "Місяць 2",
+                            Title = "Розділ 2",
                         },
                         new() {
                             Number = 3,
-                            Title = "Місяць 3",
+                            Title = "Розділ 3",
                         },
                     },
                 },
