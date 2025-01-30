@@ -87,7 +87,7 @@ public class TestsRepository : ITestsRepository
             if (!result.IsSuccess) return new Result<GetTestDto> { IsSuccess = false, ErrorMessage = result.ErrorMessage }; ;
         }
 
-        test.Id = _context.Tests.Max(t => t.Id) + 1;
+        test.Id = _context.Tests.Any() ? _context.Tests.Max(c => c.Id) + 1 : 1;
         await _context.Tests.AddAsync(test);
 
         // foreach (var optionId in newTest.OptionIds)

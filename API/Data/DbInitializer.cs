@@ -2882,6 +2882,7 @@ namespace API.Data
                     Duration = 6,
                     PriceFull = 2950,
                     PriceMonthly = 750,
+                    IsActive = true,
                     Sections = new List<Section>
                     {
                         new() {
@@ -2916,6 +2917,7 @@ namespace API.Data
                     Duration = 4,
                     PriceFull = 1950,
                     PriceMonthly = 750,
+                    IsActive = true,
                     Sections = new List<Section>
                     {
                         new() {
@@ -2942,6 +2944,7 @@ namespace API.Data
                     Duration = 3,
                     PriceFull = 1650,
                     PriceMonthly = 750,
+                    IsActive = true,
                     Sections = new List<Section>
                     {
                         new() {
@@ -2964,6 +2967,7 @@ namespace API.Data
                     Duration = 3,
                     PriceFull = 1450,
                     PriceMonthly = 750,
+                    IsActive = true,
                     Sections = new List<Section>
                     {
                         new() {
@@ -2991,6 +2995,7 @@ namespace API.Data
                     Duration = courseSections.Duration,
                     PriceFull = courseSections.PriceFull,
                     PriceMonthly = courseSections.PriceMonthly,
+                    IsActive = courseSections.IsActive
                 };
 
                 context.Courses.Add(course);

@@ -66,7 +66,7 @@ namespace API.Repositories.Implementation
             var practiceResult = await ProcessVideoForLesson(newLesson.PracticeFile, null, (url, id) => { lesson.UrlPractice = url; lesson.PracticePublicId = id; });
             if (practiceResult != null) return practiceResult;
 
-            lesson.Id = _context.Lessons.Max(l => l.Id) + 1;
+            lesson.Id = _context.Lessons.Any() ? _context.Lessons.Max(c => c.Id) + 1 : 1;
             await _context.Lessons.AddAsync(lesson);
 
             return await SaveChangesAndReturnResult(lesson.Id, username);

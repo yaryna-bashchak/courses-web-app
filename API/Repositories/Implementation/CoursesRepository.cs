@@ -30,8 +30,10 @@ namespace API.Repositories.Implementation
         public async Task<Result<GetCourseDto>> AddCourse(AddCourseDto newCourse, string username)
         {
             var course = _mapper.Map<Course>(newCourse);
+            var user = await _userManager.FindByNameAsync(username);
 
-            course.Id = _context.Courses.Max(c => c.Id) + 1;
+            course.CreatedBy = user.Id;
+            course.Id = _context.Courses.Any() ? _context.Courses.Max(c => c.Id) + 1 : 1;
             await _context.Courses.AddAsync(course);
 
             return await SaveChangesAndReturnResult(course.Id, username);
@@ -47,6 +49,7 @@ namespace API.Repositories.Implementation
             dbCourse.Description = updatedCourse.Description ?? "";
             dbCourse.PriceFull = updatedCourse.PriceFull != -1 ? updatedCourse.PriceFull : dbCourse.PriceFull;
             dbCourse.PriceMonthly = updatedCourse.PriceMonthly != -1 ? updatedCourse.PriceMonthly : dbCourse.PriceMonthly;
+            dbCourse.IsActive = updatedCourse.IsActive != -1 ? updatedCourse.IsActive == 1 : dbCourse.IsActive;
 
             return await SaveChangesAndReturnResult(id, username);
         }

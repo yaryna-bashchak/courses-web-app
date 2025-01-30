@@ -37,7 +37,7 @@ namespace API.Repositories.Implementation
                 if (!result.IsSuccess) return new Result<GetOptionDto> { IsSuccess = false, ErrorMessage = result.ErrorMessage }; ;
             }
 
-            option.Id = _context.Options.Max(o => o.Id) + 1;
+            option.Id = _context.Options.Any() ? _context.Options.Max(c => c.Id) + 1 : 1;
 
             await _context.Options.AddAsync(option);
 
