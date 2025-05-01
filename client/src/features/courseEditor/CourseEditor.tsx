@@ -12,8 +12,9 @@ import { removeCourse, setCourse } from "../courses/coursesSlice";
 import { LoadingButton } from "@mui/lab";
 import { useAppDispatch } from "../../app/store/configureStore";
 import { toast } from "react-toastify";
+import TestsForm from "./testsFrom/TestsForm";
 
-type EditMode = 'false' | 'course' | 'lesson';
+type EditMode = 'false' | 'course' | 'lesson' | 'tests';
 
 export default function CourseEditor() {
     const { courses, status, coursesLoaded } = useCourses({ onlyEditableByUser: true });
@@ -71,10 +72,15 @@ export default function CourseEditor() {
             .catch(() => toast.error('Не вдалося скопіювати посилання'));
     }
 
-    const handleSelectLesson = (section: Section | undefined) => (lesson: Lesson | undefined,) => {
+    const handleSelectLesson = (section: Section | undefined) => (lesson: Lesson | undefined) => {
         setSelectedSection(section);
         setSelectedLesson(lesson);
         setEditMode('lesson');
+    }
+
+    const handleSelectTests = (lesson: Lesson | undefined) => {
+        setSelectedLesson(lesson);
+        setEditMode('tests');
     }
 
     const cancelEdit = () => {
@@ -87,11 +93,17 @@ export default function CourseEditor() {
         if (editMode === 'course') {
             if (selectedCourse) setSelectedCourse(undefined);
             setEditMode('false');
+            return;
+        }
+        if (editMode === 'tests') {
+            if (selectedLesson) setSelectedLesson(undefined);
+            setEditMode('course');
+            return;
         }
     }
 
     if (isCoursesRequestMade === false || status.includes('pending')) return <LoadingComponent />
-    if (editMode === 'course') return <CourseForm course={selectedCourse} cancelEdit={cancelEdit} handleSelectLesson={handleSelectLesson} setSelectedCourse={setSelectedCourse} />
+    if (editMode === 'course') return <CourseForm course={selectedCourse} cancelEdit={cancelEdit} handleSelectLesson={handleSelectLesson} handleSelectTests={handleSelectTests} setSelectedCourse={setSelectedCourse} />
     if (editMode === 'lesson' && selectedSection)
         return <LessonForm
             lesson={selectedLesson}
@@ -102,6 +114,7 @@ export default function CourseEditor() {
                     selectedSection.lessons.reduce((max, lesson) => lesson.number > max ? lesson.number : max, 0) + 1
                     : 1}
         />
+    if (editMode === 'tests') return <TestsForm lessonId={selectedLesson?.id} cancelEdit={cancelEdit} />
 
     return (
         <>

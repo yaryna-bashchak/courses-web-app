@@ -8,22 +8,23 @@ interface Props {
     lesson?: Lesson;
     handleSelectLesson?: (lesson: Lesson | undefined) => void;
     handleDeleteLesson?: (id: number) => void;
+    handleSelectTests?: (lesson: Lesson | undefined) => void;
     loadingState?: LoadingState;
 }
 
-export default function LessonLine({ lesson, handleSelectLesson, handleDeleteLesson, loadingState }: Props) {
+export default function LessonLine({ lesson, handleSelectLesson, handleSelectTests, handleDeleteLesson, loadingState }: Props) {
     return (
         <>
             <TableRow
                 key={lesson?.id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-                {handleSelectLesson && (lesson && handleDeleteLesson ? <>
+                {handleSelectLesson && (lesson && handleDeleteLesson && handleSelectTests ? <>
                     <TableCell align="left">{lesson?.title}</TableCell>
                     <TableCell align="right">{[lesson?.urlTheory, lesson?.urlPractice].filter(Boolean).length}/2</TableCell>
                     <TableCell align="right">
                         <Button onClick={() => handleSelectLesson(lesson)} startIcon={<Edit />} sx={{pr: 2, pl: 2}}>урок</Button>
-                        <Button startIcon={<Checklist />} sx={{pr: 1, pl: 2}} color='success'>тести</Button>
+                        <Button onClick={() => handleSelectTests(lesson)} startIcon={<Checklist />} sx={{pr: 1, pl: 2}} color='success'>тести</Button>
                         <LoadingButton loading={loadingState?.[lesson.id]?.delete} onClick={() => handleDeleteLesson(lesson.id)} startIcon={<Delete />} color='error' />
                     </TableCell>
                 </> : <>
