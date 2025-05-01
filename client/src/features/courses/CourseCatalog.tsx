@@ -23,7 +23,7 @@ function splitCourses(courses: Course[]): { title: string, courses: Course[] }[]
 }
 
 export default function CourseCatalog() {
-    const { courses, status } = useCourses();
+    const { courses, status } = useCourses({ onlyActive: true });
 
     if (status.includes('pending')) return <LoadingComponent />
 

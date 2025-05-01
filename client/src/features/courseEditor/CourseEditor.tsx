@@ -15,7 +15,7 @@ import { useAppDispatch } from "../../app/store/configureStore";
 type EditMode = 'false' | 'course' | 'lesson';
 
 export default function CourseEditor() {
-    const { courses, status, coursesLoaded } = useCourses();
+    const { courses, status, coursesLoaded } = useCourses({ onlyEditableByUser: true });
     const [isCoursesRequestMade, setIsCoursesRequestMade] = useState(coursesLoaded);
     const [editMode, setEditMode] = useState<EditMode>('false');
     const [selectedCourse, setSelectedCourse] = useState<Course | undefined>(undefined);

@@ -21,7 +21,7 @@ export default function LaptopNavLinks() {
                         {title.toUpperCase()}
                     </ListItem>
                 ))}
-                {user && user.roles?.includes('Admin') && adminLinks.map(({ title, path }) => (
+                {user && user.claims?.includes('Permission: ManageCourses') && adminLinks.map(({ title, path }) => (
                     <ListItem
                         component={NavLink}
                         to={path}
