@@ -7,9 +7,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { Link, useNavigate } from 'react-router-dom';
-import { Paper } from '@mui/material';
+import { Checkbox, FormControlLabel, Paper } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { useForm } from 'react-hook-form';
+import { FieldValues, useForm } from 'react-hook-form';
 import agent from '../../app/api/agent';
 import { toast } from 'react-toastify';
 
@@ -18,6 +18,15 @@ export default function Register() {
     const { register, handleSubmit, setError, formState: { isSubmitting, errors, isValid } } = useForm({
         mode: 'onTouched',
     });
+
+    const submitForm = (data: FieldValues) => {
+        agent.Account.register(data)
+            .then(() => {
+                toast.success('Ви успішно зареєстровані! Тепер можете увійти');
+                navigate('/login');
+            })
+            .catch(error => handleApiErrors(error))
+    }
 
     const handleApiErrors = (errors: any) => {
         if (errors) {
@@ -43,12 +52,7 @@ export default function Register() {
                 Реєстрація
             </Typography>
             <Box component="form"
-                onSubmit={handleSubmit(data => agent.Account.register(data)
-                    .then(() => {
-                        toast.success('Ви успішно зареєстровані! Тепер можете увійти');
-                        navigate('/login');
-                    })
-                    .catch(error => handleApiErrors(error)))}
+                onSubmit={handleSubmit(submitForm)}
                 noValidate sx={{ mt: 1 }}
             >
                 <TextField
@@ -91,6 +95,12 @@ export default function Register() {
                     })}
                     error={!!errors.password}
                     helperText={errors?.password?.message as string}
+                />
+                <FormControlLabel
+                    control={
+                        <Checkbox {...register('isTeacher')} />
+                    }
+                    label='Я викладач'
                 />
                 <LoadingButton
                     loading={isSubmitting}
