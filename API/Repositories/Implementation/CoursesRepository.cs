@@ -49,7 +49,7 @@ namespace API.Repositories.Implementation
             dbCourse.Description = updatedCourse.Description ?? "";
             dbCourse.PriceFull = updatedCourse.PriceFull != -1 ? updatedCourse.PriceFull : dbCourse.PriceFull;
             dbCourse.PriceMonthly = updatedCourse.PriceMonthly != -1 ? updatedCourse.PriceMonthly : dbCourse.PriceMonthly;
-            dbCourse.IsActive = updatedCourse.IsActive != -1 ? updatedCourse.IsActive == 1 : dbCourse.IsActive;
+            dbCourse.IsActive = updatedCourse.IsActive;
 
             return await SaveChangesAndReturnResult(id, username);
         }

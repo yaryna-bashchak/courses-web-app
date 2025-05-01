@@ -8,6 +8,6 @@ namespace API.Dtos.Course
         public string Description { get; set; }
         public int PriceFull { get; set; } = -1;
         public int PriceMonthly { get; set; } = -1;
-        public int IsActive { get; set; } = -1;
+        public bool IsActive { get; set; }
     }
 }

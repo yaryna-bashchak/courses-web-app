@@ -8,7 +8,7 @@ import CourseForm from "./courseForm/CourseForm";
 import LessonForm from "./lessonForm/LessonForm";
 import LoadingComponent from "../../app/layout/LoadingComponent";
 import agent from "../../app/api/agent";
-import { removeCourse } from "../courses/coursesSlice";
+import { removeCourse, setCourse } from "../courses/coursesSlice";
 import { LoadingButton } from "@mui/lab";
 import { useAppDispatch } from "../../app/store/configureStore";
 
@@ -24,6 +24,8 @@ export default function CourseEditor() {
     const dispatch = useAppDispatch();
     const [loading, setLoading] = useState(false);
     const [target, setTarget] = useState(0);
+    const [activationLoading, setActivationLoading] = useState(false);
+    const [activationTarget, setActivationTarget] = useState(0);
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -45,6 +47,20 @@ export default function CourseEditor() {
             .then(() => dispatch(removeCourse(id)))
             .catch(error => console.log(error))
             .finally(() => setLoading(false));
+    }
+
+    const handleToggleActiveCourse = async (course: Course) => {
+        setActivationLoading(true);
+        setActivationTarget(course.id);
+
+        try {
+            const updatedCourse = await agent.Course.update(course.id, { ...course, isActive: !course.isActive });
+            dispatch(setCourse(updatedCourse));
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setActivationLoading(false);
+        }
     }
 
     const handleSelectLesson = (section: Section | undefined) => (lesson: Lesson | undefined,) => {
@@ -94,8 +110,9 @@ export default function CourseEditor() {
                             {!isMobile && <>
                                 <TableCell align="right">Тривалість</TableCell>
                                 <TableCell align="right">Повна ціна</TableCell>
-                                <TableCell align="right">Щомісячна ціна</TableCell>
-                                <TableCell align="right">Кількість секцій</TableCell>
+                                <TableCell align="right">Ціна розділу</TableCell>
+                                <TableCell align="right">Кількість розділів</TableCell>
+                                <TableCell align="left">Стан</TableCell>
                             </>}
                             <TableCell align="right"></TableCell>
                         </TableRow>
@@ -116,6 +133,13 @@ export default function CourseEditor() {
                                     <TableCell align="right">{course.sections.length}</TableCell>
                                 </>}
                                 <TableCell align="right">
+                                    <LoadingButton
+                                        loading={activationLoading && activationTarget === course.id}
+                                        onClick={() => handleToggleActiveCourse(course)}
+                                        startIcon={course.isActive ? <VisibilityOff /> : <Visibility />}
+                                        color={course.isActive ? 'inherit' : 'success'}
+                                        sx={course.isActive ? { color: 'gray' } : {}}
+                                    />
                                     <Button onClick={() => handleSelectCourse(course)} startIcon={<Edit />} />
                                     <LoadingButton loading={loading && target === course.id} onClick={() => handleDeleteCourse(course.id)} startIcon={<Delete />} color='error' />
                                 </TableCell>

@@ -7,6 +7,8 @@ export interface Course {
   duration: number
   priceFull: number
   priceMonthly: number
+isActive: boolean
+  createdBy: string
   sections: Section[]
 }
 
