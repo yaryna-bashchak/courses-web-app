@@ -24,7 +24,7 @@ export default function useCourses({ onlyActive = false, onlyEditableByUser = fa
 
             if (onlyEditableByUser) {
                 if (!user) return false;
-                const isCreator = course.createdBy === user.username;
+                const isCreator = course.createdBy === user.id;
                 const isAdmin = user.claims?.includes('Permission: AdminAccess');
                 return isCreator || isAdmin;
             }

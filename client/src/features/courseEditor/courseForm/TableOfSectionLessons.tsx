@@ -50,10 +50,9 @@ export default function TableOfSectionLessons({ section, handleSelectLesson }: P
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>№</TableCell>
-                                    <TableCell align="left">Назва уроку</TableCell>
-                                    {/* {!isMobile && <TableCell align="center">Важливість</TableCell>} */}
-                                    <TableCell align="right"></TableCell>
+                                    <TableCell align="left" sx={{ width: '50%' }}>Назва уроку</TableCell>
+                                    <TableCell align="right" sx={{ width: '15%' }}>Відео</TableCell>
+                                    <TableCell align="right" sx={{ width: '35%' }}></TableCell>
                                 </TableRow>
                             </TableHead>
 

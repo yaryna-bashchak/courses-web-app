@@ -1,5 +1,5 @@
-import { Edit, Delete, Add } from "@mui/icons-material";
-import { TableRow, TableCell, Button, useMediaQuery, useTheme } from "@mui/material";
+import { Edit, Delete, Add, Checklist } from "@mui/icons-material";
+import { TableRow, TableCell, Button } from "@mui/material";
 import { Lesson } from "../../../app/models/lesson";
 import { LoadingState } from "./SectionForm";
 import { LoadingButton } from "@mui/lab";
@@ -12,9 +12,6 @@ interface Props {
 }
 
 export default function LessonLine({ lesson, handleSelectLesson, handleDeleteLesson, loadingState }: Props) {
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
     return (
         <>
             <TableRow
@@ -22,13 +19,11 @@ export default function LessonLine({ lesson, handleSelectLesson, handleDeleteLes
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
                 {handleSelectLesson && (lesson && handleDeleteLesson ? <>
-                    <TableCell component="th" scope="row">
-                        {lesson?.id}
-                    </TableCell>
                     <TableCell align="left">{lesson?.title}</TableCell>
-                    {/* {!isMobile && <TableCell align="center">{lesson?.importance}</TableCell>} */}
+                    <TableCell align="right">{[lesson?.urlTheory, lesson?.urlPractice].filter(Boolean).length}/2</TableCell>
                     <TableCell align="right">
-                        <Button onClick={() => handleSelectLesson(lesson)} startIcon={<Edit />} />
+                        <Button onClick={() => handleSelectLesson(lesson)} startIcon={<Edit />} sx={{pr: 2, pl: 2}}>урок</Button>
+                        <Button startIcon={<Checklist />} sx={{pr: 1, pl: 2}} color='success'>тести</Button>
                         <LoadingButton loading={loadingState?.[lesson.id]?.delete} onClick={() => handleDeleteLesson(lesson.id)} startIcon={<Delete />} color='error' />
                     </TableCell>
                 </> : <>

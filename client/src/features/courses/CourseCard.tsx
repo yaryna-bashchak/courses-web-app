@@ -13,13 +13,17 @@ export default function CourseCard({ courseId }: Props) {
 
     return (
         <>
-            <Card sx={{ width: '90%', maxWidth: '300px', minWidth: '250px' }}>
-                <CardMedia
-                    sx={{ height: 140 }}
-                    image="https://naurok.ua/uploads/blog/eksetasi-odhgon-23-11-2018.jpg"
-                    title="green iguana"
-                />
-                <CardContent>
+            <Card sx={{
+                    width: '90%',
+                    maxWidth: '300px',
+                    minWidth: '250px',
+                    boxShadow: 3,
+                    borderRadius: 2,
+                    p: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                }}>
+                <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant="h5" component="div">
                         {course?.title}
                     </Typography>

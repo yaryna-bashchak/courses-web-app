@@ -1,5 +1,5 @@
-import { Typography, Button, TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Box, useTheme, useMediaQuery } from "@mui/material";
-import { Edit, Delete, Visibility, VisibilityOff } from "@mui/icons-material";
+import { Typography, Button, TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Box, useTheme, useMediaQuery, IconButton } from "@mui/material";
+import { Edit, Delete, Visibility, VisibilityOff, Link } from "@mui/icons-material";
 import useCourses from "../../app/hooks/useCourses";
 import { useEffect, useState } from "react";
 import { Course, Section } from "../../app/models/course";
@@ -62,7 +62,7 @@ export default function CourseEditor() {
             setActivationLoading(false);
         }
     }
-    
+
     const handleSelectLesson = (section: Section | undefined) => (lesson: Lesson | undefined,) => {
         setSelectedSection(section);
         setSelectedLesson(lesson);
@@ -105,45 +105,60 @@ export default function CourseEditor() {
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>№</TableCell>
-                            <TableCell align="left">Назва курсу</TableCell>
+                            <TableCell align="left" sx={{ width: '25%' }}>Назва курсу</TableCell>
                             {!isMobile && <>
-                                <TableCell align="right">Повна ціна</TableCell>
-                                <TableCell align="right">Ціна розділу</TableCell>
-                                <TableCell align="right">Кількість розділів</TableCell>
-                                <TableCell align="left">Стан</TableCell>
+                                <TableCell align="right" sx={{ width: '12%' }}>Повна ціна</TableCell>
+                                <TableCell align="right" sx={{ width: '15%' }}>Ціна розділу</TableCell>
+                                <TableCell align="right" sx={{ width: '10%' }}>Розділів</TableCell>
+                                <TableCell align="left" sx={{ width: '13%' }}>Стан</TableCell>
                             </>}
-                            <TableCell align="right"></TableCell>
+                            <TableCell align="right" sx={{ width: '25%' }}></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {courses.map((course) => (
-                            <TableRow
-                                key={course.id}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                                <TableCell component="th" scope="row">{course.id} </TableCell>
-                                <TableCell align="left">{course.title}</TableCell>
-                                {!isMobile && <>
+                        {courses.length > 0
+                            ? courses.map((course) => (
+                                <TableRow
+                                    key={course.id}
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                >
+                                    <TableCell align="left">{course.title}</TableCell>
+                                    {!isMobile && <>
 
-                                    <TableCell align="right">{course.priceFull}</TableCell>
-                                    <TableCell align="right">{course.priceMonthly}</TableCell>
-                                    <TableCell align="right">{course.sections.length}</TableCell>
-                                    <TableCell align="left">{course.isActive ? "Активний" : "Неактивний"}</TableCell>
-                                </>}
-                                <TableCell align="right">
-                                    <LoadingButton
-                                        loading={activationLoading && activationTarget === course.id}
-                                        onClick={() => handleToggleActiveCourse(course)}
-                                        startIcon={course.isActive ? <VisibilityOff /> : <Visibility />}
-                                        color={course.isActive ? 'inherit' : 'success'}
-                                        sx={course.isActive ? { color: 'gray' } : {}}
-                                    />
-                                    <Button onClick={() => handleSelectCourse(course)} startIcon={<Edit />} />
-                                    <LoadingButton loading={loading && target === course.id} onClick={() => handleDeleteCourse(course.id)} startIcon={<Delete />} color='error' />
+                                        <TableCell align="right">{course.priceFull}</TableCell>
+                                        <TableCell align="right">{course.priceMonthly}</TableCell>
+                                        <TableCell align="right">{course.sections.length}</TableCell>
+                                        <TableCell align="left">{course.isActive ? "Активний" : "Неактивний"}</TableCell>
+                                    </>}
+                                    <TableCell align="right">
+                                        <Box display="flex" justifyContent="space-between" flexWrap="wrap">
+                                            <IconButton onClick={() => handleSelectCourse(course)} color='primary'>
+                                                <Edit />
+                                            </IconButton>
+                                            <LoadingButton
+                                                loading={activationLoading && activationTarget === course.id}
+                                                onClick={() => handleToggleActiveCourse(course)}
+                                                color={course.isActive ? 'inherit' : 'success'}
+                                                sx={course.isActive ? { color: 'gray', minWidth: 0, padding: 1 } : { minWidth: 0, padding: 1 }}
+                                            >
+                                                {course.isActive ? <VisibilityOff /> : <Visibility />}
+                                            </LoadingButton>
+                                            <LoadingButton sx={{ minWidth: 0, padding: 1, color: 'grey' }}>
+                                                <Link />
+                                            </LoadingButton>
+                                            <LoadingButton loading={loading && target === course.id} onClick={() => handleDeleteCourse(course.id)} sx={{ minWidth: 0, padding: 1 }} color='error'>
+                                                <Delete />
+                                            </LoadingButton>
+                                        </Box>
+                                    </TableCell>
+                                </TableRow>
+                            ))
+                            : <TableRow sx={{ backgroundColor: '#e8e9eb' }}>
+                                <TableCell align="center" colSpan={7}>
+                                    <Typography>У вас поки немає створених курсів</Typography>
                                 </TableCell>
                             </TableRow>
-                        ))}
+                        }
                     </TableBody>
                 </Table>
             </TableContainer>

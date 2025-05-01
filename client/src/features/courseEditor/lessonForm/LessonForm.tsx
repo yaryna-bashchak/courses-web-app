@@ -64,11 +64,8 @@ export default function LessonForm({ lesson, cancelEdit, section, numberOfNewLes
             </Typography>
             <form onSubmit={handleSubmit(handleSubmitData)}>
                 <Grid container spacing={3}>
-                    <Grid item xs={12} sm={8}>
+                    <Grid item xs={12} sm={12}>
                         <AppTextInput control={control} name='title' label='Назва уроку' />
-                    </Grid>
-                    <Grid item xs={12} sm={4}>
-                        <AppTextInput type="number" control={control} name='importance' label='Важливість' />
                     </Grid>
                     <Grid item xs={12}>
                         <AppTextInput multiline={true} rows={4} control={control} name='description' label='Опис' />
