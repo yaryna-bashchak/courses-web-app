@@ -62,12 +62,12 @@ export default function CourseDetails() {
                         to={`/checkout/${course?.id}`}
                         size="small"
                         variant="contained"
+                        sx={{p: '4px 20px'}}
                     >
                         Купити
                     </Button>}
             </Box>
-            {!isCourseBought && <Typography variant="body1">Нижче представлені теми уроків, що будуть на курсі. Тільки для огляду. Щоб отримати до них доступ, перейдіть до оплати.</Typography>}
-            <List className="list-border" sx={{ p: "0px", m: "8px 0px" }}>
+            <List className="list-border" sx={{ p: "0px", m: "16px 0px" }}>
                 {course && course.sections.map((section) =>
                     section.lessons.length !== 0 ?
                         !courseLoaded ?

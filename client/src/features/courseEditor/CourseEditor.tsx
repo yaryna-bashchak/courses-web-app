@@ -11,6 +11,7 @@ import agent from "../../app/api/agent";
 import { removeCourse, setCourse } from "../courses/coursesSlice";
 import { LoadingButton } from "@mui/lab";
 import { useAppDispatch } from "../../app/store/configureStore";
+import { toast } from "react-toastify";
 
 type EditMode = 'false' | 'course' | 'lesson';
 
@@ -61,6 +62,13 @@ export default function CourseEditor() {
         } finally {
             setActivationLoading(false);
         }
+    }
+
+    const handleCopyLink = (courseId: number) => {
+        const courseUrl = `${window.location.origin}/course/${courseId}`;
+        navigator.clipboard.writeText(courseUrl)
+            .then(() => toast.success('Посилання скопійовано!'))
+            .catch(() => toast.error('Не вдалося скопіювати посилання'));
     }
 
     const handleSelectLesson = (section: Section | undefined) => (lesson: Lesson | undefined,) => {
@@ -139,14 +147,14 @@ export default function CourseEditor() {
                                                 loading={activationLoading && activationTarget === course.id}
                                                 onClick={() => handleToggleActiveCourse(course)}
                                                 color={course.isActive ? 'inherit' : 'success'}
-                                                sx={course.isActive ? { color: 'gray', minWidth: 0, padding: 1 } : { minWidth: 0, padding: 1 }}
+                                                sx={course.isActive ? { color: 'gray', minWidth: 0, padding: 1, borderRadius: '50%' } : { minWidth: 0, padding: 1, borderRadius: '50%' }}
                                             >
                                                 {course.isActive ? <VisibilityOff /> : <Visibility />}
                                             </LoadingButton>
-                                            <LoadingButton sx={{ minWidth: 0, padding: 1, color: 'grey' }}>
+                                            <IconButton onClick={() => handleCopyLink(course.id)} sx={{ color: '#993399' }} >
                                                 <Link />
-                                            </LoadingButton>
-                                            <LoadingButton loading={loading && target === course.id} onClick={() => handleDeleteCourse(course.id)} sx={{ minWidth: 0, padding: 1 }} color='error'>
+                                            </IconButton>
+                                            <LoadingButton loading={loading && target === course.id} onClick={() => handleDeleteCourse(course.id)} sx={{ minWidth: 0, padding: 1, borderRadius: '50%' }} color='error'>
                                                 <Delete />
                                             </LoadingButton>
                                         </Box>
