@@ -63,7 +63,7 @@ export default function Filters() {
                             debouncedSearch(event);
                         }}
                     />
-                    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'start', gap: '10px' }}>
+                    {/* <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'start', gap: '10px' }}>
 
                     <Button sx={getBoolButtonStyle(lessonParams.maxImportance === 0)} variant="outlined" size="small"
                         // endIcon={<StarPurple500RoundedIcon />}
@@ -79,7 +79,7 @@ export default function Filters() {
                         }}>
                         не завершені
                     </Button>
-                    </div>
+                    </div> */}
                 </> : <></>}
         </>
     )

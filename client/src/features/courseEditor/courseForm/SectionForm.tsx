@@ -136,7 +136,7 @@ export default function SectionForm({ section, handleSelectLesson, courseId, num
         </>
         : <TableRow sx={{ backgroundColor: '#e8e9eb' }}>
             <TableCell align="center" colSpan={4}>
-                <Typography>Щоб створити секції та уроки, спочатку збережіть курс</Typography>
+                <Typography>Щоб створити розділи та уроки, спочатку збережіть курс</Typography>
             </TableCell>
         </TableRow>
 }

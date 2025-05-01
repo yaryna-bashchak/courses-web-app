@@ -27,8 +27,9 @@ export default function CourseCard({ courseId }: Props) {
                         {course?.description}
                     </Typography>
                     <Typography variant="h6" sx={{ mt: '5px' }}>
-                        Тривалість: {course?.duration} місяців <br />
-                        Ціна: <Box component="span" color="secondary.main">{course?.priceMonthly} грн/міс</Box> або {course?.priceFull} грн
+                        Розділів: {course?.sections.length} <br />
+                        Ціна: <Box component="span" color="secondary.main">{course?.priceFull} грн</Box>
+                        <Box component="span" sx={{ display: 'block', fontSize: '1rem', lineHeight: 1.2, mt: '4px' }}>або {course?.priceMonthly} грн за розділ, якщо купувати частинами</Box>
                     </Typography>
                 </CardContent>
                 <CardActions sx={{ display: 'flex', justifyContent: 'flex-end' }}>

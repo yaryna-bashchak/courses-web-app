@@ -52,7 +52,7 @@ export default function TableOfSectionLessons({ section, handleSelectLesson }: P
                                 <TableRow>
                                     <TableCell>№</TableCell>
                                     <TableCell align="left">Назва уроку</TableCell>
-                                    {!isMobile && <TableCell align="center">Важливість</TableCell>}
+                                    {/* {!isMobile && <TableCell align="center">Важливість</TableCell>} */}
                                     <TableCell align="right"></TableCell>
                                 </TableRow>
                             </TableHead>

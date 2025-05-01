@@ -1,5 +1,5 @@
 import { Typography, Button, TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Box, useTheme, useMediaQuery } from "@mui/material";
-import { Edit, Delete } from "@mui/icons-material";
+import { Edit, Delete, Visibility, VisibilityOff } from "@mui/icons-material";
 import useCourses from "../../app/hooks/useCourses";
 import { useEffect, useState } from "react";
 import { Course, Section } from "../../app/models/course";
@@ -62,7 +62,7 @@ export default function CourseEditor() {
             setActivationLoading(false);
         }
     }
-
+    
     const handleSelectLesson = (section: Section | undefined) => (lesson: Lesson | undefined,) => {
         setSelectedSection(section);
         setSelectedLesson(lesson);
@@ -108,7 +108,6 @@ export default function CourseEditor() {
                             <TableCell>№</TableCell>
                             <TableCell align="left">Назва курсу</TableCell>
                             {!isMobile && <>
-                                <TableCell align="right">Тривалість</TableCell>
                                 <TableCell align="right">Повна ціна</TableCell>
                                 <TableCell align="right">Ціна розділу</TableCell>
                                 <TableCell align="right">Кількість розділів</TableCell>
@@ -127,10 +126,10 @@ export default function CourseEditor() {
                                 <TableCell align="left">{course.title}</TableCell>
                                 {!isMobile && <>
 
-                                    <TableCell align="right">{course.duration}</TableCell>
                                     <TableCell align="right">{course.priceFull}</TableCell>
                                     <TableCell align="right">{course.priceMonthly}</TableCell>
                                     <TableCell align="right">{course.sections.length}</TableCell>
+                                    <TableCell align="left">{course.isActive ? "Активний" : "Неактивний"}</TableCell>
                                 </>}
                                 <TableCell align="right">
                                     <LoadingButton

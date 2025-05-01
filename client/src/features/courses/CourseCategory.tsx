@@ -14,7 +14,7 @@ export default function CourseCategory({ courseCategory }: Props) {
             <Typography variant="h5">{title}</Typography>
             {courses.length === 0
                 ? <Typography>Курсів не знайдено</Typography>
-                : <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'center', textAlign: 'center' }}>
+                : <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'center' }}>
                     {courses.sort((a, b) => a.id - b.id).map((course) =>
                         <CourseCard courseId={course.id} key={course.id + 1} />
                     )}

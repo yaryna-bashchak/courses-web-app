@@ -59,17 +59,14 @@ export default function CourseForm({ course: givenCourse, cancelEdit, handleSele
             </Typography>
             <form onSubmit={handleSubmit(handleSubmitData)}>
                 <Grid container spacing={3}>
-                    <Grid item xs={12} sm={12}>
+                    <Grid item xs={12} sm={4}>
                         <AppTextInput control={control} name='title' label='Назва курсу' />
                     </Grid>
                     <Grid item xs={12} sm={4}>
                         <AppTextInput type="number" control={control} name='priceFull' label='Повна ціна' />
                     </Grid>
                     <Grid item xs={12} sm={4}>
-                        <AppTextInput type="number" control={control} name='priceMonthly' label='Щомісячна ціна' />
-                    </Grid>
-                    <Grid item xs={12} sm={4}>
-                        <AppTextInput type="number" control={control} name='duration' label='Тривалість' />
+                        <AppTextInput type="number" control={control} name='priceMonthly' label='Ціна розділу' />
                     </Grid>
                     <Grid item xs={12}>
                         <AppTextInput multiline={true} rows={2} control={control} name='description' label='Опис' />
@@ -81,7 +78,7 @@ export default function CourseForm({ course: givenCourse, cancelEdit, handleSele
                 </Box>
             </form>
             <Box display='flex' justifyContent='space-between'>
-                <Typography sx={{ pt: 6 }} variant='h4'>Секції</Typography>
+                <Typography sx={{ pt: 6 }} variant='h4'>Розділи</Typography>
                 {/* <Button onClick={() => setEditMode('course')} sx={{ m: 2 }} size='large' variant='contained'>Створити</Button> */}
             </Box>
             <TableContainer component={Paper} sx={{ mt: 2 }}>

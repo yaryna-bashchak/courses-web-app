@@ -42,7 +42,7 @@ export default function SectionHeader({ section, handleEditClick, handleSubmitDa
                     </TableCell>
                 </> : <>
                     <TableCell align="center" colSpan={4}>
-                        <Button onClick={handleEditClick} size="large" startIcon={<Add />}>додати секцію</Button>
+                        <Button onClick={handleEditClick} size="large" startIcon={<Add />}>додати розділ</Button>
                     </TableCell>
                 </>
                 }
