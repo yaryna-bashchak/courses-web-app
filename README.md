@@ -1,4 +1,4 @@
-# Web App for Courses
+# Platform for creating and taking Courses
 
 ## Technologies
 - <img src='https://github.com/yaryna-bashchak/maths-course/assets/90560209/e3d0cafd-dcf6-4db2-9331-b8ca7b558d99' height='25'> **.NET** for the Back-end
@@ -8,7 +8,7 @@
 
 ## About project
 
-This is a Web App for creating and taking the courses. Here is a web API that helps you interact with a database that stores courses data, and the client side to create and take courses (log in, create and complete lessons, upload and watch videos, take tests).
+This is a Platform for creating and taking the courses. Here is a web API that helps you interact with a database that stores courses data, and the client side to create and take courses (log in, create and complete lessons, upload and watch videos, take tests).
  
 <!---More about business logic, database schema, component diagram you can see in [design document](https://docs.google.com/document/d/1bEvHXDxrGMU5eWxjBdT6eoA5OIkL18bKe9ypRxkODgo/edit?usp=sharing). --->
 
