@@ -4,9 +4,11 @@ export interface Course {
   id: number
   title: string
   description: string
-  duration: number
+  // duration: number -- deprecated
   priceFull: number
   priceMonthly: number
+  isActive: boolean
+  createdBy: string
   sections: Section[]
 }
 

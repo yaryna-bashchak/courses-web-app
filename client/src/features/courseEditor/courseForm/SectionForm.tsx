@@ -15,6 +15,7 @@ import { removeSection, setSection } from "../../courses/coursesSlice";
 interface Props {
     section?: Section;
     handleSelectLesson?: (lesson: Lesson | undefined) => void;
+    handleSelectTests?: (lesson: Lesson | undefined) => void;
     courseId?: number;
     numberOfNewSection?: number;
 }
@@ -28,7 +29,7 @@ export interface LoadingState {
     [key: number]: ActionLoadingState;
 }
 
-export default function SectionForm({ section, handleSelectLesson, courseId, numberOfNewSection: number }: Props) {
+export default function SectionForm({ section, handleSelectLesson, handleSelectTests, courseId, numberOfNewSection: number }: Props) {
     const [isEditing, setIsEditing] = useState(false);
     const dispatch = useAppDispatch();
     const [loadingState, setLoadingState] = useState<LoadingState>({});
@@ -132,11 +133,11 @@ export default function SectionForm({ section, handleSelectLesson, courseId, num
                 </TableRow>
             )}
 
-            {handleSelectLesson && <TableOfSectionLessons section={section} handleSelectLesson={handleSelectLesson} />}
+            {handleSelectLesson && <TableOfSectionLessons section={section} handleSelectLesson={handleSelectLesson} handleSelectTests={handleSelectTests}/>}
         </>
         : <TableRow sx={{ backgroundColor: '#e8e9eb' }}>
             <TableCell align="center" colSpan={4}>
-                <Typography>Щоб створити секції та уроки, спочатку збережіть курс</Typography>
+                <Typography>Щоб створити розділи та уроки, спочатку збережіть курс</Typography>
             </TableCell>
         </TableRow>
 }

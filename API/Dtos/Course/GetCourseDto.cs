@@ -10,6 +10,8 @@ namespace API.Dtos.Course
         public int Duration { get; set; }
         public int PriceFull { get; set; }
         public int PriceMonthly { get; set; }
+        public string CreatedBy { get; set; }
+        public bool IsActive { get; set; }
         public List<GetSectionDto> Sections { get; set; }
     }
 }

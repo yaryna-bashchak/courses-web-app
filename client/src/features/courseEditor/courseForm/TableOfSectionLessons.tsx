@@ -11,9 +11,10 @@ import { removeLesson } from "../../courses/coursesSlice";
 interface Props {
     section?: Section;
     handleSelectLesson?: (lesson: Lesson | undefined) => void;
+    handleSelectTests?: (lesson: Lesson | undefined) => void;
 }
 
-export default function TableOfSectionLessons({ section, handleSelectLesson }: Props) {
+export default function TableOfSectionLessons({ section, handleSelectLesson, handleSelectTests }: Props) {
     const theme = useTheme();
     const dispatch = useAppDispatch();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -50,16 +51,15 @@ export default function TableOfSectionLessons({ section, handleSelectLesson }: P
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>№</TableCell>
-                                    <TableCell align="left">Назва уроку</TableCell>
-                                    {!isMobile && <TableCell align="center">Важливість</TableCell>}
-                                    <TableCell align="right"></TableCell>
+                                    <TableCell align="left" sx={{ width: '50%' }}>Назва уроку</TableCell>
+                                    <TableCell align="right" sx={{ width: '15%' }}>Відео</TableCell>
+                                    <TableCell align="right" sx={{ width: '35%' }}></TableCell>
                                 </TableRow>
                             </TableHead>
 
                             <TableBody>
                                 {section?.lessons?.map((lesson) => (
-                                    <LessonLine key={lesson.id} lesson={lesson} loadingState={loadingState} handleSelectLesson={handleSelectLesson} handleDeleteLesson={handleDeleteLesson} />
+                                    <LessonLine key={lesson.id} lesson={lesson} loadingState={loadingState} handleSelectLesson={handleSelectLesson} handleDeleteLesson={handleDeleteLesson} handleSelectTests={handleSelectTests}/>
                                 ))}
                                 <LessonLine handleSelectLesson={handleSelectLesson} />
                             </TableBody>

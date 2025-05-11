@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Policy = "ManageCourses")]
     public class OptionsController : BaseApiController
     {
         private readonly IOptionsRepository _optionsRepository;

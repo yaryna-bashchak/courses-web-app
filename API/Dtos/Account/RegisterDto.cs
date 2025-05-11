@@ -7,6 +7,7 @@ namespace API.Dtos.Account
 {
     public class RegisterDto : LoginDto
     {
-        public string Email { get; set; }
+        // public string Email { get; set; }
+        public bool IsTeacher { get; set; }
     }
 }

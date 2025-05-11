@@ -9,6 +9,8 @@ namespace API.Dtos.Lesson
         public string Description { get; set; }
         public string UrlTheory { get; set; }
         public string UrlPractice { get; set; }
+        public string TheoryTitle { get; set; }
+        public string PracticeTitle { get; set; }
         public int Number { get; set; }
         public int Importance { get; set; } = 0;
         public float? TestScore { get; set; }

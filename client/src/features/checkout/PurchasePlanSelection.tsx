@@ -21,9 +21,9 @@ export default function PurchasePlanSelection({ ...otherProps }: Props) {
     {
       title: 'Оплачувати частинами',
       description: `
-      Курс "${course?.title}" складається з ${course?.duration} місяців навчання.
-      При оплаті певного місяця вам відкривається доступ до відповідних уроків.
-      Оплата наступних місяців не є обов'язковою, але ви матимете доступ лише до тих, що оплатили.`,
+      Курс "${course?.title}" складається з ${course?.sections.length} розділів.
+      При оплаті певного розділу вам відкривається доступ до відповідних уроків.
+      Оплата наступних розділів не є обов'язковою, але ви матимете доступ лише до тих, що оплатили.`,
       price: `${course?.priceMonthly} грн/міс`,
       type: 'Section',
     },
@@ -32,7 +32,7 @@ export default function PurchasePlanSelection({ ...otherProps }: Props) {
       description: `
       При повній оплаті ви отримуєте доступ до всіх уроків та одразу можете перейти до вивчення будь-якої теми. При купівлі одразу всього курсу ціна знижена.`,
       price: `${course?.priceFull} грн`,
-      oldPrice: `${course?.priceMonthly && course?.duration && course.priceMonthly * course.duration} грн`,
+      oldPrice: `${course?.priceMonthly && course?.sections.length && course.priceMonthly * course.sections.length} грн`,
       type: 'Course',
     },
   ];

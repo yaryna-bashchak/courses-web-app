@@ -27,7 +27,7 @@ export default function RightMobileMenu() {
 
     const sideList = () => {
         let combinedLinks = (user ? authorizedLinks : nonAuthorizedLinks).concat(baseLinks);
-        if (user && user.roles?.includes('Admin')) combinedLinks = combinedLinks.concat(adminLinks);
+        if (user && user.claims?.includes('Permission: ManageCourses')) combinedLinks = combinedLinks.concat(adminLinks);
 
         return (
             <List>

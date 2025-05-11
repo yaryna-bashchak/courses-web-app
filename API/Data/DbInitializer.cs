@@ -7,9 +7,9 @@ namespace API.Data
 {
     public static class DbInitializer
     {
-        public static async Task Initialize(CourseContext context, UserManager<User> userManager)
+        public static async Task Initialize(CourseContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
-            await InitializeUsers(userManager);
+            await InitializeUsers(userManager, roleManager);
             InitializeLessons(context);
             InitializeKeywords(context);
             InitializeLessonKeywords(context);
@@ -27,7 +27,7 @@ namespace API.Data
 
             var usersToSections = new List<UserToSections> {
                 new() {
-                    UserName = "bob",
+                    UserName = "sam",
                     SectionIds = Enumerable.Range(1, 3).ToList(),
                 },
                 new() {
@@ -64,7 +64,7 @@ namespace API.Data
 
             var usersToLessons = new List<UserToLessons> {
                 new() {
-                    UserName = "bob",
+                    UserName = "sam",
                     LessonsInfo = new List<UserLessonInfo> {
                         new() {
                             LessonId = 1,
@@ -161,27 +161,55 @@ namespace API.Data
             context.SaveChanges();
         }
 
-        public static async Task InitializeUsers(UserManager<User> userManager)
+        public static async Task InitializeUsers(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             if (!userManager.Users.Any())
             {
                 var user = new User
                 {
-                    UserName = "bob",
-                    Email = "bob@gmail.com"
+                    UserName = "sam",
+                    // Email = "sam@gmail.com"
                 };
 
                 await userManager.CreateAsync(user, "Pa$$w0rd");
-                await userManager.AddToRoleAsync(user, "Member");
+                await AssignRoleWithClaimsAsync(userManager, roleManager, user, "Member");
+
+                var teacher = new User
+                {
+                    UserName = "carol",
+                    // Email = "carol@gmail.com"
+                };
+
+                await userManager.CreateAsync(teacher, "Pa$$w0rd");
+                await AssignRoleWithClaimsAsync(userManager, roleManager, teacher, "Teacher");
 
                 var admin = new User
                 {
                     UserName = "yaryna",
-                    Email = "plan.znoshnika@gmail.com"
+                    // Email = "plan.znoshnika@gmail.com"
                 };
 
                 await userManager.CreateAsync(admin, "Pa$$w0rd");
-                await userManager.AddToRolesAsync(admin, new[] { "Member", "Admin" });
+                await AssignRoleWithClaimsAsync(userManager, roleManager, admin, "Admin");
+            }
+        }
+
+        public static async Task AssignRoleWithClaimsAsync(
+            UserManager<User> userManager,
+            RoleManager<IdentityRole> roleManager,
+            User user,
+            string role)
+        {
+            await userManager.AddToRoleAsync(user, role);
+
+            var identityRole = await roleManager.FindByNameAsync(role);
+            if (identityRole != null)
+            {
+                var claims = await roleManager.GetClaimsAsync(identityRole);
+                foreach (var claim in claims)
+                {
+                    await userManager.AddClaimAsync(user, claim);
+                }
             }
         }
 
@@ -2854,31 +2882,32 @@ namespace API.Data
                     Duration = 6,
                     PriceFull = 2950,
                     PriceMonthly = 750,
+                    IsActive = true,
                     Sections = new List<Section>
                     {
                         new() {
                             Number = 1,
-                            Title = "Місяць 1",
+                            Title = "Розділ 1",
                         },
                         new() {
                             Number = 2,
-                            Title = "Місяць 2",
+                            Title = "Розділ 2",
                         },
                         new() {
                             Number = 3,
-                            Title = "Місяць 3",
+                            Title = "Розділ 3",
                         },
                         new() {
                             Number = 4,
-                            Title = "Місяць 4",
+                            Title = "Розділ 4",
                         },
                         new() {
                             Number = 5,
-                            Title = "Місяць 5",
+                            Title = "Розділ 5",
                         },
                         new() {
                             Number = 6,
-                            Title = "Місяць 6",
+                            Title = "Розділ 6",
                         },
                     },
                 },
@@ -2888,23 +2917,24 @@ namespace API.Data
                     Duration = 4,
                     PriceFull = 1950,
                     PriceMonthly = 750,
+                    IsActive = true,
                     Sections = new List<Section>
                     {
                         new() {
                             Number = 1,
-                            Title = "Місяць 1",
+                            Title = "Розділ 1",
                         },
                         new() {
                             Number = 2,
-                            Title = "Місяць 2",
+                            Title = "Розділ 2",
                         },
                         new() {
                             Number = 3,
-                            Title = "Місяць 3",
+                            Title = "Розділ 3",
                         },
                         new() {
                             Number = 4,
-                            Title = "Місяць 4",
+                            Title = "Розділ 4",
                         },
                     },
                 },
@@ -2914,19 +2944,20 @@ namespace API.Data
                     Duration = 3,
                     PriceFull = 1650,
                     PriceMonthly = 750,
+                    IsActive = true,
                     Sections = new List<Section>
                     {
                         new() {
                             Number = 1,
-                            Title = "Місяць 1",
+                            Title = "Розділ 1",
                         },
                         new() {
                             Number = 2,
-                            Title = "Місяць 2",
+                            Title = "Розділ 2",
                         },
                         new() {
                             Number = 3,
-                            Title = "Місяць 3",
+                            Title = "Розділ 3",
                         },
                     },
                 },
@@ -2936,19 +2967,20 @@ namespace API.Data
                     Duration = 3,
                     PriceFull = 1450,
                     PriceMonthly = 750,
+                    IsActive = true,
                     Sections = new List<Section>
                     {
                         new() {
                             Number = 1,
-                            Title = "Місяць 1",
+                            Title = "Розділ 1",
                         },
                         new() {
                             Number = 2,
-                            Title = "Місяць 2",
+                            Title = "Розділ 2",
                         },
                         new() {
                             Number = 3,
-                            Title = "Місяць 3",
+                            Title = "Розділ 3",
                         },
                     },
                 },
@@ -2963,6 +2995,7 @@ namespace API.Data
                     Duration = courseSections.Duration,
                     PriceFull = courseSections.PriceFull,
                     PriceMonthly = courseSections.PriceMonthly,
+                    IsActive = courseSections.IsActive
                 };
 
                 context.Courses.Add(course);

@@ -3,6 +3,7 @@ using System;
 using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(CourseContext))]
-    partial class CourseContextModelSnapshot : ModelSnapshot
+    [Migration("20250130182339_AddedTeacherRoleAndCreatedBy")]
+    partial class AddedTeacherRoleAndCreatedBy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -426,19 +429,19 @@ namespace API.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1",
+                            Id = "72972afd-9a9d-45a2-95bd-0d2e34876e45",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
-                            Id = "2",
+                            Id = "27b420ae-cc97-413a-a4f0-93883ec408b4",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
-                            Id = "3",
+                            Id = "6ef7d26a-0c48-4fbb-aae4-5d4881155e29",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -467,50 +470,6 @@ namespace API.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ClaimType = "Permission",
-                            ClaimValue = "BasicAccess",
-                            RoleId = "1"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ClaimType = "Permission",
-                            ClaimValue = "BasicAccess",
-                            RoleId = "2"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ClaimType = "Permission",
-                            ClaimValue = "ManageCourses",
-                            RoleId = "2"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            ClaimType = "Permission",
-                            ClaimValue = "BasicAccess",
-                            RoleId = "3"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            ClaimType = "Permission",
-                            ClaimValue = "ManageCourses",
-                            RoleId = "3"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            ClaimType = "Permission",
-                            ClaimValue = "AdminAccess",
-                            RoleId = "3"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>

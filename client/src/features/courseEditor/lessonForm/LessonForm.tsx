@@ -12,6 +12,7 @@ import { setLesson } from "../../courses/coursesSlice";
 import { useAppDispatch } from "../../../app/store/configureStore";
 import { LoadingButton } from "@mui/lab";
 import { Section } from "../../../app/models/course";
+import { ArrowBack } from '@mui/icons-material';
 
 interface Props {
     lesson?: Lesson;
@@ -26,7 +27,7 @@ export default function LessonForm({ lesson, cancelEdit, section, numberOfNewLes
     const [practicePreviewUrl, setPracticePreviewUrl] = useState<string | undefined>(undefined);
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-    
+
     const { control, reset, handleSubmit, formState: { isDirty, isSubmitting } } = useForm({
         resolver: yupResolver<any>(lessonValidationSchema)
     });
@@ -59,16 +60,16 @@ export default function LessonForm({ lesson, cancelEdit, section, numberOfNewLes
 
     return (
         <Box sx={{ p: isMobile ? 2 : 4 }}>
-            <Typography variant="h4" gutterBottom sx={{ mb: 4 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'start' }}>
+                <Button startIcon={<ArrowBack />} variant="outlined" onClick={cancelEdit}>Назад</Button>
+            </Box>
+            <Typography variant="h4" gutterBottom sx={{ mb: 4, mt: '16px' }}>
                 Урок
             </Typography>
             <form onSubmit={handleSubmit(handleSubmitData)}>
                 <Grid container spacing={3}>
-                    <Grid item xs={12} sm={8}>
+                    <Grid item xs={12} sm={12}>
                         <AppTextInput control={control} name='title' label='Назва уроку' />
-                    </Grid>
-                    <Grid item xs={12} sm={4}>
-                        <AppTextInput type="number" control={control} name='importance' label='Важливість' />
                     </Grid>
                     <Grid item xs={12}>
                         <AppTextInput multiline={true} rows={4} control={control} name='description' label='Опис' />
@@ -77,7 +78,7 @@ export default function LessonForm({ lesson, cancelEdit, section, numberOfNewLes
                         <Typography variant="h5" gutterBottom>
                             Теорія
                         </Typography>
-                        <Box display='flex' flexWrap='wrap' sx={{gap: '10px'}} justifyContent='space-between' alignItems='center'>
+                        <Box display='flex' flexWrap='wrap' sx={{ gap: '10px' }} justifyContent='space-between' alignItems='center'>
                             <AppDropzone control={control} name='theoryFile' setPreviewUrl={setTheoryPreviewUrl} currentPreviewUrl={theoryPreviewUrl} />
                             <VideoPreview newVideoUrl={theoryPreviewUrl} initialVideoUrl={lesson?.urlTheory} />
                         </Box>
@@ -86,7 +87,7 @@ export default function LessonForm({ lesson, cancelEdit, section, numberOfNewLes
                         <Typography variant="h5" gutterBottom>
                             Практика
                         </Typography>
-                        <Box display='flex' flexWrap='wrap' sx={{gap: '10px'}} justifyContent='space-between' alignItems='center'>
+                        <Box display='flex' flexWrap='wrap' sx={{ gap: '10px' }} justifyContent='space-between' alignItems='center'>
                             <AppDropzone control={control} name='practiceFile' setPreviewUrl={setPracticePreviewUrl} currentPreviewUrl={practicePreviewUrl} />
                             <VideoPreview newVideoUrl={practicePreviewUrl} initialVideoUrl={lesson?.urlPractice} />
                         </Box>

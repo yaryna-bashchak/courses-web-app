@@ -1,5 +1,5 @@
-import { Typography, Button, TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Box, useTheme, useMediaQuery } from "@mui/material";
-import { Edit, Delete } from "@mui/icons-material";
+import { Typography, Button, TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Box, useTheme, useMediaQuery, IconButton } from "@mui/material";
+import { Edit, Delete, Visibility, VisibilityOff, Link } from "@mui/icons-material";
 import useCourses from "../../app/hooks/useCourses";
 import { useEffect, useState } from "react";
 import { Course, Section } from "../../app/models/course";
@@ -8,14 +8,16 @@ import CourseForm from "./courseForm/CourseForm";
 import LessonForm from "./lessonForm/LessonForm";
 import LoadingComponent from "../../app/layout/LoadingComponent";
 import agent from "../../app/api/agent";
-import { removeCourse } from "../courses/coursesSlice";
+import { removeCourse, setCourse } from "../courses/coursesSlice";
 import { LoadingButton } from "@mui/lab";
 import { useAppDispatch } from "../../app/store/configureStore";
+import { toast } from "react-toastify";
+import TestsForm from "./testsFrom/TestsForm";
 
-type EditMode = 'false' | 'course' | 'lesson';
+type EditMode = 'false' | 'course' | 'lesson' | 'tests';
 
 export default function CourseEditor() {
-    const { courses, status, coursesLoaded } = useCourses();
+    const { courses, status, coursesLoaded } = useCourses({ onlyEditableByUser: true });
     const [isCoursesRequestMade, setIsCoursesRequestMade] = useState(coursesLoaded);
     const [editMode, setEditMode] = useState<EditMode>('false');
     const [selectedCourse, setSelectedCourse] = useState<Course | undefined>(undefined);
@@ -24,6 +26,8 @@ export default function CourseEditor() {
     const dispatch = useAppDispatch();
     const [loading, setLoading] = useState(false);
     const [target, setTarget] = useState(0);
+    const [activationLoading, setActivationLoading] = useState(false);
+    const [activationTarget, setActivationTarget] = useState(0);
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -47,10 +51,36 @@ export default function CourseEditor() {
             .finally(() => setLoading(false));
     }
 
-    const handleSelectLesson = (section: Section | undefined) => (lesson: Lesson | undefined,) => {
+    const handleToggleActiveCourse = async (course: Course) => {
+        setActivationLoading(true);
+        setActivationTarget(course.id);
+
+        try {
+            const updatedCourse = await agent.Course.update(course.id, { ...course, isActive: !course.isActive });
+            dispatch(setCourse(updatedCourse));
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setActivationLoading(false);
+        }
+    }
+
+    const handleCopyLink = (courseId: number) => {
+        const courseUrl = `${window.location.origin}/course/${courseId}`;
+        navigator.clipboard.writeText(courseUrl)
+            .then(() => toast.success('Посилання скопійовано!'))
+            .catch(() => toast.error('Не вдалося скопіювати посилання'));
+    }
+
+    const handleSelectLesson = (section: Section | undefined) => (lesson: Lesson | undefined) => {
         setSelectedSection(section);
         setSelectedLesson(lesson);
         setEditMode('lesson');
+    }
+
+    const handleSelectTests = (lesson: Lesson | undefined) => {
+        setSelectedLesson(lesson);
+        setEditMode('tests');
     }
 
     const cancelEdit = () => {
@@ -63,11 +93,17 @@ export default function CourseEditor() {
         if (editMode === 'course') {
             if (selectedCourse) setSelectedCourse(undefined);
             setEditMode('false');
+            return;
+        }
+        if (editMode === 'tests') {
+            if (selectedLesson) setSelectedLesson(undefined);
+            setEditMode('course');
+            return;
         }
     }
 
     if (isCoursesRequestMade === false || status.includes('pending')) return <LoadingComponent />
-    if (editMode === 'course') return <CourseForm course={selectedCourse} cancelEdit={cancelEdit} handleSelectLesson={handleSelectLesson} setSelectedCourse={setSelectedCourse} />
+    if (editMode === 'course') return <CourseForm course={selectedCourse} cancelEdit={cancelEdit} handleSelectLesson={handleSelectLesson} handleSelectTests={handleSelectTests} setSelectedCourse={setSelectedCourse} />
     if (editMode === 'lesson' && selectedSection)
         return <LessonForm
             lesson={selectedLesson}
@@ -78,6 +114,7 @@ export default function CourseEditor() {
                     selectedSection.lessons.reduce((max, lesson) => lesson.number > max ? lesson.number : max, 0) + 1
                     : 1}
         />
+    if (editMode === 'tests') return <TestsForm lessonId={selectedLesson?.id} cancelEdit={cancelEdit} />
 
     return (
         <>
@@ -89,38 +126,60 @@ export default function CourseEditor() {
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>№</TableCell>
-                            <TableCell align="left">Назва курсу</TableCell>
+                            <TableCell align="left" sx={{ width: '25%' }}>Назва курсу</TableCell>
                             {!isMobile && <>
-                                <TableCell align="right">Тривалість</TableCell>
-                                <TableCell align="right">Повна ціна</TableCell>
-                                <TableCell align="right">Щомісячна ціна</TableCell>
-                                <TableCell align="right">Кількість секцій</TableCell>
+                                <TableCell align="right" sx={{ width: '12%' }}>Повна ціна</TableCell>
+                                <TableCell align="right" sx={{ width: '15%' }}>Ціна розділу</TableCell>
+                                <TableCell align="right" sx={{ width: '10%' }}>Розділів</TableCell>
+                                <TableCell align="left" sx={{ width: '13%' }}>Стан</TableCell>
                             </>}
-                            <TableCell align="right"></TableCell>
+                            <TableCell align="right" sx={{ width: '25%' }}></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {courses.map((course) => (
-                            <TableRow
-                                key={course.id}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                                <TableCell component="th" scope="row">{course.id} </TableCell>
-                                <TableCell align="left">{course.title}</TableCell>
-                                {!isMobile && <>
+                        {courses.length > 0
+                            ? courses.map((course) => (
+                                <TableRow
+                                    key={course.id}
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                >
+                                    <TableCell align="left">{course.title}</TableCell>
+                                    {!isMobile && <>
 
-                                    <TableCell align="right">{course.duration}</TableCell>
-                                    <TableCell align="right">{course.priceFull}</TableCell>
-                                    <TableCell align="right">{course.priceMonthly}</TableCell>
-                                    <TableCell align="right">{course.sections.length}</TableCell>
-                                </>}
-                                <TableCell align="right">
-                                    <Button onClick={() => handleSelectCourse(course)} startIcon={<Edit />} />
-                                    <LoadingButton loading={loading && target === course.id} onClick={() => handleDeleteCourse(course.id)} startIcon={<Delete />} color='error' />
+                                        <TableCell align="right">{course.priceFull}</TableCell>
+                                        <TableCell align="right">{course.priceMonthly}</TableCell>
+                                        <TableCell align="right">{course.sections.length}</TableCell>
+                                        <TableCell align="left">{course.isActive ? "Активний" : "Неактивний"}</TableCell>
+                                    </>}
+                                    <TableCell align="right">
+                                        <Box display="flex" justifyContent="space-between" flexWrap="wrap">
+                                            <IconButton onClick={() => handleSelectCourse(course)} color='primary'>
+                                                <Edit />
+                                            </IconButton>
+                                            <LoadingButton
+                                                loading={activationLoading && activationTarget === course.id}
+                                                onClick={() => handleToggleActiveCourse(course)}
+                                                color={course.isActive ? 'inherit' : 'success'}
+                                                sx={course.isActive ? { color: 'gray', minWidth: 0, padding: 1, borderRadius: '50%' } : { minWidth: 0, padding: 1, borderRadius: '50%' }}
+                                            >
+                                                {course.isActive ? <VisibilityOff /> : <Visibility />}
+                                            </LoadingButton>
+                                            <IconButton onClick={() => handleCopyLink(course.id)} sx={{ color: '#993399' }} >
+                                                <Link />
+                                            </IconButton>
+                                            <LoadingButton loading={loading && target === course.id} onClick={() => handleDeleteCourse(course.id)} sx={{ minWidth: 0, padding: 1, borderRadius: '50%' }} color='error'>
+                                                <Delete />
+                                            </LoadingButton>
+                                        </Box>
+                                    </TableCell>
+                                </TableRow>
+                            ))
+                            : <TableRow sx={{ backgroundColor: '#e8e9eb' }}>
+                                <TableCell align="center" colSpan={7}>
+                                    <Typography>У вас поки немає створених курсів</Typography>
                                 </TableCell>
                             </TableRow>
-                        ))}
+                        }
                     </TableBody>
                 </Table>
             </TableContainer>

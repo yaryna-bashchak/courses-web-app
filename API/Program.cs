@@ -84,9 +84,10 @@ builder.Services.AddCors();
 builder.Services.AddIdentityCore<User>(opt =>
 {
     opt.Password.RequireNonAlphanumeric = false;
-    opt.User.RequireUniqueEmail = true;
+    opt.User.RequireUniqueEmail = false;
 })
     .AddRoles<IdentityRole>()
+    .AddClaimsPrincipalFactory<UserClaimsPrincipalFactory<User, IdentityRole>>()
     .AddEntityFrameworkStores<CourseContext>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(opt =>
@@ -101,7 +102,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .GetBytes(builder.Configuration["JWTSettings:TokenKey"]))
         };
     });
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("BasicAccess", policy =>
+        policy.RequireClaim("Permission", "BasicAccess"));
+
+    options.AddPolicy("ManageCourses", policy =>
+        policy.RequireClaim("Permission", "ManageCourses"));
+
+    options.AddPolicy("AdminAccess", policy =>
+        policy.RequireClaim("Permission", "AdminAccess"));
+});
 
 var app = builder.Build();
 
@@ -136,11 +147,12 @@ app.MapFallbackToController("Index", "Fallback");
 var scope = app.Services.CreateScope();
 var context = scope.ServiceProvider.GetRequiredService<CourseContext>();
 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
 try
 {
     await context.Database.MigrateAsync();
-    await DbInitializer.Initialize(context, userManager);
+    await DbInitializer.Initialize(context, userManager, roleManager);
 }
 catch (Exception ex)
 {

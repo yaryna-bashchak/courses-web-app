@@ -12,15 +12,17 @@ import agent from "../../../app/api/agent";
 import { useAppDispatch } from "../../../app/store/configureStore";
 import { setCourse } from "../../courses/coursesSlice";
 import { LoadingButton } from "@mui/lab";
+import { ArrowBack } from '@mui/icons-material';
 
 interface Props {
     course?: Course;
     cancelEdit: () => void;
     handleSelectLesson: (section: Section | undefined) => (lesson: Lesson | undefined) => void;
+    handleSelectTests?: (lesson: Lesson | undefined) => void;
     setSelectedCourse: (course: Course | undefined) => void;
 }
 
-export default function CourseForm({ course: givenCourse, cancelEdit, handleSelectLesson, setSelectedCourse }: Props) {
+export default function CourseForm({ course: givenCourse, cancelEdit, handleSelectLesson, handleSelectTests, setSelectedCourse }: Props) {
     const { course: fullCourse } = useCourse(givenCourse?.id);
     const course = fullCourse ?? givenCourse;
     const dispatch = useAppDispatch();
@@ -54,22 +56,22 @@ export default function CourseForm({ course: givenCourse, cancelEdit, handleSele
 
     return (
         <Box sx={{ p: isMobile ? 2 : 4 }}>
-            <Typography variant="h4" gutterBottom sx={{ mb: 4 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'start' }}>
+                <Button startIcon={<ArrowBack />} variant="outlined" onClick={cancelEdit}>Назад</Button>
+            </Box>
+            <Typography variant="h4" gutterBottom sx={{ mt: '16px' }}>
                 Курс
             </Typography>
-            <form onSubmit={handleSubmit(handleSubmitData)}>
+            <form onSubmit={handleSubmit(handleSubmitData)} style={{marginTop: '16px'}}>
                 <Grid container spacing={3}>
-                    <Grid item xs={12} sm={12}>
+                    <Grid item xs={12} sm={4}>
                         <AppTextInput control={control} name='title' label='Назва курсу' />
                     </Grid>
                     <Grid item xs={12} sm={4}>
                         <AppTextInput type="number" control={control} name='priceFull' label='Повна ціна' />
                     </Grid>
                     <Grid item xs={12} sm={4}>
-                        <AppTextInput type="number" control={control} name='priceMonthly' label='Щомісячна ціна' />
-                    </Grid>
-                    <Grid item xs={12} sm={4}>
-                        <AppTextInput type="number" control={control} name='duration' label='Тривалість' />
+                        <AppTextInput type="number" control={control} name='priceMonthly' label='Ціна розділу' />
                     </Grid>
                     <Grid item xs={12}>
                         <AppTextInput multiline={true} rows={2} control={control} name='description' label='Опис' />
@@ -81,14 +83,14 @@ export default function CourseForm({ course: givenCourse, cancelEdit, handleSele
                 </Box>
             </form>
             <Box display='flex' justifyContent='space-between'>
-                <Typography sx={{ pt: 6 }} variant='h4'>Секції</Typography>
+                <Typography sx={{ mt: '24px' }} variant='h4'>Розділи</Typography>
                 {/* <Button onClick={() => setEditMode('course')} sx={{ m: 2 }} size='large' variant='contained'>Створити</Button> */}
             </Box>
-            <TableContainer component={Paper} sx={{ mt: 2 }}>
+            <TableContainer component={Paper} sx={{ mt: '16px' }}>
                 <Table>
                     <TableBody>
                         {course?.sections.map((section, index) =>
-                            <SectionForm section={section} courseId={course?.id} key={index} handleSelectLesson={handleSelectLesson(section)} />)}
+                            <SectionForm section={section} courseId={course?.id} key={index} handleSelectLesson={handleSelectLesson(section)} handleSelectTests={handleSelectTests} />)}
                         <SectionForm
                             courseId={course?.id}
                             numberOfNewSection={

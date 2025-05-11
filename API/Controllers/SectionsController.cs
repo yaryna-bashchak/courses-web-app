@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Policy = "ManageCourses")]
     public class SectionsController : BaseApiController
     {
         private ISectionsRepository _sectionsRepository;

@@ -69,7 +69,7 @@ export default function Header() {
                                 sx={{
                                     ...navStyles,
                                 }}>
-                                План ZNO-шника
+                                План ЗНО-шника
                             </Typography>
                             {/* <Search>
                         <SearchIconWrapper>
