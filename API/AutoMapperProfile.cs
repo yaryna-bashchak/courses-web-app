@@ -75,25 +75,6 @@ namespace API
             CreateMap<Course, GetCoursePreviewDto>()
                 .ForMember(dto => dto.Sections, opt => opt.MapFrom(c => c.Sections));
             CreateMap<AddCourseDto, Course>();
-
-
-
-
-            // CreateMap<SectionLesson, GetLessonDto>()
-            //     .IncludeMembers(cl => cl.Lesson)
-            //     .ForMember(dto => dto.MonthNumber, opt => opt.MapFrom(cl => cl.MonthNumber))
-            //     .ForMember(dto => dto.IsAvailable, opt => opt.MapFrom(cl => cl.IsAvailable));
-
-            // CreateMap<Section, GetSectionDto>()
-            //     .ForMember(dto => dto.Lessons, opt => opt.MapFrom(c => c.SectionLessons));
-
-            // CreateMap<SectionLesson, GetLessonPreviewDto>()
-            //     .IncludeMembers(cl => cl.Lesson)
-            //     .ForMember(dto => dto.MonthNumber, opt => opt.MapFrom(cl => cl.MonthNumber))
-            //     .ForMember(dto => dto.IsAvailable, opt => opt.MapFrom(_ => false));
-            // CreateMap<Section, GetSectionPreviewDto>()
-            //     .ForMember(dto => dto.Lessons, opt => opt.MapFrom(c => c.SectionLessons));
-            // CreateMap<Lesson, GetLessonPreviewDto>();
         }
     }
 }

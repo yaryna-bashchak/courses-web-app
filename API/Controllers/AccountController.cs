@@ -33,7 +33,6 @@ namespace API.Controllers
             return new UserDto
             {
                 Id = user.Id,
-                // Email = user.Email,
                 Username = user.UserName,
                 Token = await _tokenService.GenerateToken(user),
                 Roles = roles.ToList(),
@@ -44,7 +43,7 @@ namespace API.Controllers
         [HttpPost("register")]
         public async Task<ActionResult> Register(RegisterDto registerDto)
         {
-            var user = new User { UserName = registerDto.Username/*, Email = registerDto.Email*/ };
+            var user = new User { UserName = registerDto.Username };
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
 
@@ -82,7 +81,6 @@ namespace API.Controllers
             return new UserDto
             {
                 Id = user.Id,
-                // Email = user.Email,
                 Username = user.UserName,
                 Token = await _tokenService.GenerateToken(user),
                 Roles = roles.ToList(),

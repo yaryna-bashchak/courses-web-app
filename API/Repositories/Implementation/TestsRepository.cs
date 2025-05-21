@@ -90,16 +90,6 @@ public class TestsRepository : ITestsRepository
         test.Id = _context.Tests.Any() ? _context.Tests.Max(c => c.Id) + 1 : 1;
         await _context.Tests.AddAsync(test);
 
-        // foreach (var optionId in newTest.OptionIds)
-        // {
-        //     var option = await _context.Options.FindAsync(optionId);
-        //     if (option != null)
-        //     {
-        //         option.TestId = test.Id;
-        //         _context.Options.Update(option);
-        //     }
-        // }
-
         return await SaveChangesAndReturnResult(test.Id);
     }
 
