@@ -94,4 +94,10 @@ export const testSelectors = testsAdapter.getSelectors(
   (state: RootState) => state.tests
 )
 
-export const { clearTests } = testsSlice.actions
+export const { 
+  clearTests,
+  setQuestion,
+  removeQuestion,
+  setOption,
+  removeOption,
+} = testsSlice.actions
