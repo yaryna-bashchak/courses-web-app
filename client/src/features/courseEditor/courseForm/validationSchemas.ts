@@ -16,6 +16,10 @@ export const questionValidationSchema = yup.object({
   question: yup.string().required()
 })
 
+export const optionValidationSchema = yup.object({
+  text: yup.string().required()
+})
+
 const FILE_SIZE_LIMIT = 100000000 // 100MB
 const SUPPORTED_FORMATS = [
   'video/mp4'

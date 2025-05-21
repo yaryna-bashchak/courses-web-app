@@ -79,7 +79,7 @@ export default function QuestionHeader({ question, index, lessonId }: Props) {
         setLoading('delete', true);
 
         agent.Test.delete(id)
-            .then(() => dispatch(removeQuestion({ id })))
+            .then(() => dispatch(removeQuestion(id)))
             .catch(error => console.log(error))
             .finally(() => setLoading('delete', false));
     }

@@ -60,15 +60,11 @@ export const testsSlice = createSlice({
       }
     },
     removeOption: (state, action) => {
-      const { id } = action.payload
-      const testsArray = Object.values(state.entities);
-
-      const test = testsArray.find(
-        t => t?.options.some(o => o.id === id)
-      );
+      const { id, testId } = action.payload
+      const test = state.entities[testId];
 
       if (test) {
-        test.options.filter(option => option.id !== id)
+        test.options = test.options.filter(option => option.id !== id)
       }
     },
   },
@@ -94,7 +90,7 @@ export const testSelectors = testsAdapter.getSelectors(
   (state: RootState) => state.tests
 )
 
-export const { 
+export const {
   clearTests,
   setQuestion,
   removeQuestion,
