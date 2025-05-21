@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { fetchTestsAsync, testSelectors } from "../../tests/testsSlice";
 import { useAppDispatch, useAppSelector } from "../../../app/store/configureStore";
 import QuestionForm from "./QuestionForm";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
 
 interface Props {
     lessonId?: number;
@@ -15,10 +16,13 @@ export default function TestsForm({ lessonId, cancelEdit }: Props) {
     const dispatch = useAppDispatch();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const tests = useAppSelector(testSelectors.selectAll);
+    const { status } = useAppSelector(state => state.tests);
 
     useEffect(() => {
         dispatch(fetchTestsAsync(lessonId!));
     }, []);
+
+    if (status.includes('pending')) return <LoadingComponent />;
 
     return (
         <Box sx={{ p: isMobile ? 2 : 4 }}>
@@ -32,7 +36,7 @@ export default function TestsForm({ lessonId, cancelEdit }: Props) {
                 <Table>
                     <TableBody>
                         {tests.map((test, index) =>
-                            <QuestionForm question={test} index={index + 1} key={index}/>)}
+                            <QuestionForm question={test} index={index + 1} key={index} />)}
                         <QuestionForm lessonId={lessonId} />
                     </TableBody>
                 </Table>
