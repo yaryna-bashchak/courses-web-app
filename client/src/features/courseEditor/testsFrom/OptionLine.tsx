@@ -14,6 +14,8 @@ import AppTextInput from "../../../app/components/AppTextInput";
 interface Props {
     option?: Option;
     testId?: number;
+    loadingAnswer: number | null;
+    handleSelectAnswer: (option: Option) => void
 }
 
 interface ActionLoadingState {
@@ -21,7 +23,7 @@ interface ActionLoadingState {
     delete?: boolean;
 }
 
-export default function OptionLine({ option, testId }: Props) {
+export default function OptionLine({ option, testId, loadingAnswer, handleSelectAnswer }: Props) {
     const optionId = option ? option.id : -1;
     const dispatch = useAppDispatch();
     const [isEditing, setIsEditing] = useState(false);
@@ -101,7 +103,7 @@ export default function OptionLine({ option, testId }: Props) {
                     <TableCell sx={{ px: 0.5 }} align="center">
                         {option && (option.isAnswer
                             ? <Button color='success'><CheckCircle /></Button>
-                            : <Button color='error'><Cancel /></Button>)
+                            : <LoadingButton color='error' onClick={() => handleSelectAnswer(option)} loading={option.id === loadingAnswer}><Cancel /></LoadingButton>)
                         }
                     </TableCell>
                 }
