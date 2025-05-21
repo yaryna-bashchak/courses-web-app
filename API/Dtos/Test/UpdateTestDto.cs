@@ -6,8 +6,5 @@ namespace API.Dtos.Test
     {
         public string Question { get; set; }
         public string Type { get; set; }
-        public IFormFile File { get; set; }
-        public List<int> OptionIdsToAdd { get; set; }
-        public List<int> OptionIdsToDelete { get; set; }
     }
 }

@@ -31,12 +31,6 @@ namespace API.Repositories.Implementation
         {
             var option = _mapper.Map<Option>(newOption);
 
-            if (newOption.File != null)
-            {
-                var result = await _imageService.ProcessImageAsync(newOption.File, null, (url, id) => { option.ImgUrl = url; option.PublicId = id; });
-                if (!result.IsSuccess) return new Result<GetOptionDto> { IsSuccess = false, ErrorMessage = result.ErrorMessage }; ;
-            }
-
             option.Id = _context.Options.Any() ? _context.Options.Max(c => c.Id) + 1 : 1;
 
             await _context.Options.AddAsync(option);
@@ -52,11 +46,6 @@ namespace API.Repositories.Implementation
 
             UpdateOptionDetails(dbOption, updatedOption);
 
-            if (updatedOption.File != null)
-            {
-                var result = await _imageService.ProcessImageAsync(updatedOption.File, dbOption.PublicId, (url, id) => { dbOption.ImgUrl = url; dbOption.PublicId = id; });
-                if (!result.IsSuccess) return new Result<GetOptionDto> { IsSuccess = false, ErrorMessage = result.ErrorMessage };
-            }
 
             return await SaveChangesAndReturnResult(id);
         }

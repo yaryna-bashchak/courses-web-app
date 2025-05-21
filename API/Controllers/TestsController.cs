@@ -48,7 +48,7 @@ namespace API.Controllers
 
         [Authorize(Policy = "ManageCourses")]
         [HttpPost]
-        public async Task<ActionResult<GetTestDto>> AddTest(/*[FromForm]*/ AddTestDto newTest)
+        public async Task<ActionResult<GetTestDto>> AddTest(AddTestDto newTest)
         {
             var username = User.Identity.Name ?? "";
             var result = await _testsRepository.AddTest(newTest);
@@ -63,7 +63,7 @@ namespace API.Controllers
 
         [Authorize(Policy = "ManageCourses")]
         [HttpPut("{id}")]
-        public async Task<ActionResult<GetTestDto>> UpdateTest(int id, /*[FromForm]*/ UpdateTestDto updatedTest)
+        public async Task<ActionResult<GetTestDto>> UpdateTest(int id, UpdateTestDto updatedTest)
         {
             var result = await _testsRepository.UpdateTest(id, updatedTest);
 

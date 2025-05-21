@@ -81,12 +81,6 @@ public class TestsRepository : ITestsRepository
     {
         var test = _mapper.Map<Test>(newTest);
 
-        if (newTest.File != null)
-        {
-            var result = await _imageService.ProcessImageAsync(newTest.File, null, (url, id) => { test.ImgUrl = url; test.PublicId = id; });
-            if (!result.IsSuccess) return new Result<GetTestDto> { IsSuccess = false, ErrorMessage = result.ErrorMessage }; ;
-        }
-
         test.Id = _context.Tests.Any() ? _context.Tests.Max(c => c.Id) + 1 : 1;
         await _context.Tests.AddAsync(test);
 
@@ -100,35 +94,6 @@ public class TestsRepository : ITestsRepository
         if (dbTest == null) return new Result<GetTestDto> { IsSuccess = false, ErrorMessage = "Test with the provided ID not found." };
 
         UpdateTestDetails(dbTest, updatedTest);
-
-        if (updatedTest.File != null)
-        {
-            var result = await _imageService.ProcessImageAsync(updatedTest.File, dbTest.PublicId, (url, id) => { dbTest.ImgUrl = url; dbTest.PublicId = id; });
-            if (!result.IsSuccess) return new Result<GetTestDto> { IsSuccess = false, ErrorMessage = result.ErrorMessage };
-        }
-
-        if (updatedTest.OptionIdsToAdd != null)
-        {
-            foreach (var optionIdToAdd in updatedTest.OptionIdsToAdd)
-            {
-                var option = await _context.Options.FindAsync(optionIdToAdd);
-                if (option != null)
-                {
-                    option.TestId = id;
-                    _context.Options.Update(option);
-                }
-            }
-        }
-
-        if (updatedTest.OptionIdsToDelete != null)
-        {
-            foreach (var optionIdToDelete in updatedTest.OptionIdsToDelete)
-            {
-                var option = await _context.Options.FirstOrDefaultAsync(o => o.Id == optionIdToDelete && o.TestId == id);
-                if (option != null)
-                    await _optionsRepository.DeleteOption(optionIdToDelete);
-            }
-        }
 
         return await SaveChangesAndReturnResult(id);
     }
