@@ -68,21 +68,6 @@ export default function Register() {
                 <TextField
                     margin="normal"
                     fullWidth
-                    label="Електронна пошта"
-                    autoComplete="email"
-                    {...register('email', {
-                        required: 'Будь ласка, вкажіть вашу електронну пошту',
-                        pattern: {
-                            value: /^\w+[\w-.]*@\w+((-\w+)|(\w*))\.[a-z]{2,3}$/,
-                            message: 'Недійсна електронна пошта'
-                        }
-                    })}
-                    error={!!errors.email}
-                    helperText={errors?.email?.message as string}
-                />
-                <TextField
-                    margin="normal"
-                    fullWidth
                     label="Пароль"
                     type="password"
                     autoComplete="current-password"
