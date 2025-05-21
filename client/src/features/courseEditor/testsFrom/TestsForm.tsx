@@ -32,7 +32,7 @@ export default function TestsForm({ lessonId, cancelEdit }: Props) {
                 <Table>
                     <TableBody>
                         {tests.map((test, index) =>
-                            <QuestionForm question={test} lessonId={lessonId} index={index + 1} key={index}/>)}
+                            <QuestionForm question={test} index={index + 1} key={index}/>)}
                         <QuestionForm lessonId={lessonId} />
                     </TableBody>
                 </Table>
