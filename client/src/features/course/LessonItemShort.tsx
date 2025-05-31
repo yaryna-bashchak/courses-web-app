@@ -1,6 +1,4 @@
 import { ListItemButton, ListItemText } from "@mui/material";
-import StarPurple500RoundedIcon from '@mui/icons-material/StarPurple500Rounded';
-import { yellow } from '@mui/material/colors';
 import { Lesson } from "../../app/models/lesson";
 import { Link, useParams } from "react-router-dom";
 
@@ -21,11 +19,6 @@ export default function LessonItemShort({ icon, lesson, isAvailable }: Props) {
                         <span style={{ display: "flex", alignItems: "center" }}>
                             {icon}
                             {lesson.number}. {lesson.title}
-                            {
-                                Array.from({ length: lesson.importance }).map((_, i) => (
-                                    <StarPurple500RoundedIcon key={i} sx={{ color: yellow[800], ml: i === 0 ? "5px" : "" }} />
-                                ))
-                            }
                         </span>
                     </ListItemText>
                 </ListItemButton>

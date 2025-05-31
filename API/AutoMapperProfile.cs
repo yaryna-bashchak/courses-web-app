@@ -71,9 +71,57 @@ namespace API
             CreateMap<AddSectionDto, Section>();
 
             CreateMap<Course, GetCourseDto>()
-                .ForMember(dto => dto.Sections, opt => opt.MapFrom(c => c.Sections));
+                .ForMember(dto => dto.Sections, opt => opt.MapFrom(c => c.Sections))
+                .ForMember(dto => dto.NumberOfParticipants, opt => opt.MapFrom((course, dto, _, context) =>
+                {
+                    var payments = context.Items["Payments"] as List<Payment>;
+                    var courseUserIds = payments
+                        .Where(p => p.PaymentStatus == PaymentStatus.PaymentReceived &&
+                                ((p.PurchaseType == "Course" && p.PurchaseId == course.Id) ||
+                                    (p.PurchaseType == "Section" && course.Sections.Select(s => s.Id).Contains(p.PurchaseId))))
+                        .Select(p => p.UserId)
+                        .Distinct()
+                        .Count();
+
+                    return courseUserIds;
+                }))
+                .ForMember(dto => dto.Earned, opt => opt.MapFrom((course, dto, _, context) =>
+                {
+                    var payments = context.Items["Payments"] as List<Payment>;
+                    var earned = payments
+                        .Where(p => p.PaymentStatus == PaymentStatus.PaymentReceived &&
+                                ((p.PurchaseType == "Course" && p.PurchaseId == course.Id) ||
+                                    (p.PurchaseType == "Section" && course.Sections.Select(s => s.Id).Contains(p.PurchaseId))))
+                        .Sum(p => p.Amount);
+
+                    return (int)earned;
+                }));
             CreateMap<Course, GetCoursePreviewDto>()
-                .ForMember(dto => dto.Sections, opt => opt.MapFrom(c => c.Sections));
+                .ForMember(dto => dto.Sections, opt => opt.MapFrom(c => c.Sections))
+                .ForMember(dto => dto.NumberOfParticipants, opt => opt.MapFrom((course, dto, _, context) =>
+                {
+                    var payments = context.Items["Payments"] as List<Payment>;
+                    var courseUserIds = payments
+                        .Where(p => p.PaymentStatus == PaymentStatus.PaymentReceived &&
+                                ((p.PurchaseType == "Course" && p.PurchaseId == course.Id) ||
+                                    (p.PurchaseType == "Section" && course.Sections.Select(s => s.Id).Contains(p.PurchaseId))))
+                        .Select(p => p.UserId)
+                        .Distinct()
+                        .Count();
+
+                    return courseUserIds;
+                }))
+                .ForMember(dto => dto.Earned, opt => opt.MapFrom((course, dto, _, context) =>
+                {
+                    var payments = context.Items["Payments"] as List<Payment>;
+                    var earned = payments
+                        .Where(p => p.PaymentStatus == PaymentStatus.PaymentReceived &&
+                                ((p.PurchaseType == "Course" && p.PurchaseId == course.Id) ||
+                                    (p.PurchaseType == "Section" && course.Sections.Select(s => s.Id).Contains(p.PurchaseId))))
+                        .Sum(p => p.Amount);
+
+                    return (int)earned;
+                }));
             CreateMap<AddCourseDto, Course>();
         }
     }

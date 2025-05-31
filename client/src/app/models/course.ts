@@ -6,6 +6,8 @@ export interface Course {
   description: string
   priceFull: number
   priceMonthly: number
+  numberOfParticipants: number
+  earned: number
   isActive: boolean
   createdBy: string
   sections: Section[]
@@ -28,6 +30,8 @@ export interface CoursePreview {
   duration: number
   priceFull: number
   priceMonthly: number
+  numberOfParticipants: number
+  earned: number
   sections: SectionPreview[]
 }
 
