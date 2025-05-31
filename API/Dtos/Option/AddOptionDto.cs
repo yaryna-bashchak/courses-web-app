@@ -4,7 +4,6 @@ namespace API.Dtos.Option
     {
         public int TestId { get; set; }
         public string Text { get; set; } = "";
-        public IFormFile File { get; set; }
         public bool isAnswer { get; set; } = false;
     }
 }

@@ -31,12 +31,6 @@ namespace API.Repositories.Implementation
         {
             var option = _mapper.Map<Option>(newOption);
 
-            if (newOption.File != null)
-            {
-                var result = await _imageService.ProcessImageAsync(newOption.File, null, (url, id) => { option.ImgUrl = url; option.PublicId = id; });
-                if (!result.IsSuccess) return new Result<GetOptionDto> { IsSuccess = false, ErrorMessage = result.ErrorMessage }; ;
-            }
-
             option.Id = _context.Options.Any() ? _context.Options.Max(c => c.Id) + 1 : 1;
 
             await _context.Options.AddAsync(option);
@@ -52,11 +46,6 @@ namespace API.Repositories.Implementation
 
             UpdateOptionDetails(dbOption, updatedOption);
 
-            if (updatedOption.File != null)
-            {
-                var result = await _imageService.ProcessImageAsync(updatedOption.File, dbOption.PublicId, (url, id) => { dbOption.ImgUrl = url; dbOption.PublicId = id; });
-                if (!result.IsSuccess) return new Result<GetOptionDto> { IsSuccess = false, ErrorMessage = result.ErrorMessage };
-            }
 
             return await SaveChangesAndReturnResult(id);
         }
@@ -85,8 +74,9 @@ namespace API.Repositories.Implementation
 
         public async Task<Result<bool>> DeleteAllOptionsOfTest(int testId)
         {
-            var dbOptions = _context.Options
-                .Where(o => o.TestId == testId);
+            var dbOptions = await _context.Options
+                .Where(o => o.TestId == testId)
+                .ToListAsync();
 
             foreach (var option in dbOptions)
             {
@@ -101,7 +91,7 @@ namespace API.Repositories.Implementation
         private void UpdateOptionDetails(Option dbOption, UpdateOptionDto updatedOption)
         {
             dbOption.Text = updatedOption.Text ?? "";
-            dbOption.isAnswer = updatedOption.isAnswer != -1 ? (updatedOption.isAnswer != 0) : dbOption.isAnswer;
+            dbOption.isAnswer = updatedOption.isAnswer;
         }
 
         private async Task<Result<GetOptionDto>> SaveChangesAndReturnResult(int optionId)

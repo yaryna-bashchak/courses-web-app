@@ -82,44 +82,5 @@ namespace API.Controllers
 
             return Ok();
         }
-
-        // [HttpGet("keyword/{keyword}")]
-        // public async Task<ActionResult<List<GetLessonDto>>> GetLessonsByKeyword(string keyword)
-        // {
-        //     var result = await _lessonsRepository.GetLessonsByKeyword(keyword);
-
-        //     if (!result.IsSuccess)
-        //     {
-        //         return NotFound(result.ErrorMessage);
-        //     }
-
-        //     return result.Data;
-        // }
-
-        // [HttpGet("keyword/id/{id}")]
-        // public async Task<ActionResult<List<GetLessonDto>>> GetLessonsByKeywordId(int id)
-        // {
-        //     var result = await _lessonsRepository.GetLessonsByKeywordID(id);
-
-        //     if (!result.IsSuccess)
-        //     {
-        //         return NotFound(result.ErrorMessage);
-        //     }
-
-        //     return result.Data;
-        // }
-
-        // [HttpGet("importance/{importance}")]
-        // public async Task<ActionResult<List<GetLessonDto>>> GetLessonsByImportance(int importance)
-        // {
-        //     var result = await _lessonsRepository.GetLessonsByImportance(importance);
-
-        //     if (!result.IsSuccess)
-        //     {
-        //         return NotFound(result.ErrorMessage);
-        //     }
-
-        //     return result.Data;
-        // }
     }
 }

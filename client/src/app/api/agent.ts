@@ -113,6 +113,12 @@ const Test = {
   delete: (id: number) => requests.delete(`tests/${id}`)
 }
 
+const Option = {
+  create: (body: any) => requests.post('options', body),
+  update: (id: number, body: any) => requests.put(`options/${id}`, body),
+  delete: (id: number) => requests.delete(`options/${id}`)
+}
+
 const Account = {
   login: (values: any) => requests.post('account/login', values),
   register: (values: any) => requests.post('account/register', values),
@@ -137,6 +143,7 @@ const agent = {
   Course,
   Lesson,
   Test,
+  Option,
   Account,
   TestErrors,
   Section,

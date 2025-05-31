@@ -60,6 +60,10 @@ namespace API.Repositories.Implementation
 
             try
             {
+                var payments = await _context.Payments
+                    .Where(p => p.PaymentStatus == PaymentStatus.PaymentReceived)
+                    .ToListAsync();
+
                 var dbCourse = await _context.Courses
                     .Include(c => c.Sections).ThenInclude(s => s.UserSections)
                     .Include(c => c.Sections).ThenInclude(s => s.SectionLessons).ThenInclude(sl => sl.Lesson)
@@ -70,7 +74,11 @@ namespace API.Repositories.Implementation
                         .ThenInclude(l => l.UserLessons)
                     .FirstAsync(l => l.Id == id);
 
-                var course = _mapper.Map<GetCourseDto>(dbCourse, opts => opts.Items["UserId"] = user?.Id)
+                var course = _mapper.Map<GetCourseDto>(dbCourse, opts =>
+                    {
+                        opts.Items["UserId"] = user?.Id;
+                        opts.Items["Payments"] = payments;
+                    })
                     .SortAndRenumberLessons()
                     .Filter(maxImportance, onlyUncompleted)
                     .Search(searchTerm);
@@ -118,13 +126,27 @@ namespace API.Repositories.Implementation
 
             try
             {
+                var payments = await _context.Payments
+                    .Where(p => p.PaymentStatus == PaymentStatus.PaymentReceived)
+                    .ToListAsync();
+
                 var dbCourses = await _context.Courses
                     .Include(c => c.Sections).ThenInclude(s => s.UserSections)
                     .Include(c => c.Sections).ThenInclude(s => s.SectionLessons).ThenInclude(sl => sl.Lesson)
                     .ToListAsync();
 
-                var courses = dbCourses.Select(c => _mapper.Map<GetCoursePreviewDto>(c, opts => opts.Items["UserId"] = user?.Id)).ToList();
-                return new Result<List<GetCoursePreviewDto>> { IsSuccess = true, Data = courses };
+                var courses = dbCourses.Select(c => _mapper.Map<GetCoursePreviewDto>(c, opts =>
+                {
+                    opts.Items["UserId"] = user?.Id;
+                    opts.Items["Payments"] = payments;
+                })).ToList();
+                
+                var sortedCourses = courses
+                    .OrderByDescending(c => c.IsActive)
+                    .ThenByDescending(c => c.NumberOfParticipants)
+                    .ToList();
+
+                return new Result<List<GetCoursePreviewDto>> { IsSuccess = true, Data = sortedCourses };
             }
             catch (System.Exception)
             {

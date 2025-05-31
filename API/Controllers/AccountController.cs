@@ -24,8 +24,20 @@ namespace API.Controllers
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
             var user = await _userManager.FindByNameAsync(loginDto.Username);
-            if (user == null || !await _userManager.CheckPasswordAsync(user, loginDto.Password))
+            if (user == null)
                 return Unauthorized();
+
+            if (await _userManager.IsLockedOutAsync(user))
+                return AccountIsLocked();
+
+            if (!await _userManager.CheckPasswordAsync(user, loginDto.Password))
+            {
+                await _userManager.AccessFailedAsync(user);
+
+                return Unauthorized();
+            }
+
+            await _userManager.ResetAccessFailedCountAsync(user);
 
             var roles = await _userManager.GetRolesAsync(user);
             var userClaims = await _userManager.GetClaimsAsync(user);
@@ -33,7 +45,6 @@ namespace API.Controllers
             return new UserDto
             {
                 Id = user.Id,
-                // Email = user.Email,
                 Username = user.UserName,
                 Token = await _tokenService.GenerateToken(user),
                 Roles = roles.ToList(),
@@ -44,7 +55,7 @@ namespace API.Controllers
         [HttpPost("register")]
         public async Task<ActionResult> Register(RegisterDto registerDto)
         {
-            var user = new User { UserName = registerDto.Username/*, Email = registerDto.Email*/ };
+            var user = new User { UserName = registerDto.Username };
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
 
@@ -82,11 +93,23 @@ namespace API.Controllers
             return new UserDto
             {
                 Id = user.Id,
-                // Email = user.Email,
                 Username = user.UserName,
                 Token = await _tokenService.GenerateToken(user),
                 Roles = roles.ToList(),
                 Claims = userClaims.Select(c => $"{c.Type}: {c.Value}").ToList()
+            };
+        }
+
+        private ObjectResult AccountIsLocked()
+        {
+            var problemDetails = new ProblemDetails
+            {
+                Status = StatusCodes.Status401Unauthorized,
+                Title = "Account is locked due to too many failed password attempts. Please try again later."
+            };
+            return new ObjectResult(problemDetails)
+            {
+                StatusCode = StatusCodes.Status401Unauthorized
             };
         }
     }

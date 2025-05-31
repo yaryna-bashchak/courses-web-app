@@ -128,8 +128,8 @@ export default function CourseEditor() {
                         <TableRow>
                             <TableCell align="left" sx={{ width: '25%' }}>Назва курсу</TableCell>
                             {!isMobile && <>
-                                <TableCell align="right" sx={{ width: '12%' }}>Повна ціна</TableCell>
-                                <TableCell align="right" sx={{ width: '15%' }}>Ціна розділу</TableCell>
+                                <TableCell align="right" sx={{ width: '15%' }}>Статистика</TableCell>
+                                <TableCell align="right" sx={{ width: '12%' }}>Повна ціна/ за розділ</TableCell>
                                 <TableCell align="right" sx={{ width: '10%' }}>Розділів</TableCell>
                                 <TableCell align="left" sx={{ width: '13%' }}>Стан</TableCell>
                             </>}
@@ -146,8 +146,16 @@ export default function CourseEditor() {
                                     <TableCell align="left">{course.title}</TableCell>
                                     {!isMobile && <>
 
-                                        <TableCell align="right">{course.priceFull}</TableCell>
-                                        <TableCell align="right">{course.priceMonthly}</TableCell>
+                                        <TableCell align="right">
+                                            {course.numberOfParticipants} учасників
+                                            { (course.numberOfParticipants > 0) &&
+                                                <>
+                                                    <br />
+                                                    {course.earned} грн
+                                                </>
+                                            }
+                                        </TableCell>
+                                        <TableCell align="right">{course.priceFull} / {course.priceMonthly}</TableCell>
                                         <TableCell align="right">{course.sections.length}</TableCell>
                                         <TableCell align="left">{course.isActive ? "Активний" : "Неактивний"}</TableCell>
                                     </>}

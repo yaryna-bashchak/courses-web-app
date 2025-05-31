@@ -4,9 +4,10 @@ export interface Course {
   id: number
   title: string
   description: string
-  // duration: number -- deprecated
   priceFull: number
   priceMonthly: number
+  numberOfParticipants: number
+  earned: number
   isActive: boolean
   createdBy: string
   sections: Section[]
@@ -29,6 +30,8 @@ export interface CoursePreview {
   duration: number
   priceFull: number
   priceMonthly: number
+  numberOfParticipants: number
+  earned: number
   sections: SectionPreview[]
 }
 

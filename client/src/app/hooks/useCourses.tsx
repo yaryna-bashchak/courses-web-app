@@ -19,7 +19,7 @@ export default function useCourses({ onlyActive = false, onlyEditableByUser = fa
     }, [coursesLoaded, dispatch])
 
     const filteredCourses = useMemo(() => {
-        return allCourses.filter((course: Course) => {
+        const filtered = allCourses.filter((course: Course) => {
             if (onlyActive && !course.isActive) return false;
 
             if (onlyEditableByUser) {
@@ -31,6 +31,8 @@ export default function useCourses({ onlyActive = false, onlyEditableByUser = fa
 
             return true;
         });
+
+        return filtered;
     }, [allCourses, onlyActive, onlyEditableByUser, user]);
 
     return {

@@ -35,10 +35,10 @@ export default function SectionItem({ section, isOpen, onItemClick }: Props) {
 
         const completed = [Boolean(lesson.testScore)]
 
-        if (lesson.urlTheory !== "")
+        if (lesson.urlTheory !== "" && lesson.urlTheory !== null)
             completed.push(lesson.isTheoryCompleted)
 
-        if (lesson.urlPractice !== "")
+        if (lesson.urlPractice !== "" && lesson.urlPractice !== null)
             completed.push(lesson.isPracticeCompleted)
 
         if (completed.every(value => value === true)) {

@@ -26,10 +26,6 @@ export default function SectionHeader({ section, handleEditClick, handleSubmitDa
                 '&:last-child td, &:last-child th': { border: 0 }
             }}>
                 {section || isEditing ? <>
-                    <TableCell component="th" scope="row" sx={{ ...sectionCellStyle, width: '40px' }}>
-                        ID={section?.id}
-                    </TableCell>
-
                     <TableCell align="left" sx={{ ...sectionCellStyle, fontWeight: 'bold' }}>{section?.title}</TableCell>
 
                     <TableCell align="right" colSpan={2}>

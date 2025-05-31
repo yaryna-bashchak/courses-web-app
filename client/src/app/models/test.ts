@@ -8,6 +8,7 @@ export interface Test {
 
 export interface Option {
   id: number
+  testId: number
   text: string
   imgUrl: string
   isAnswer: boolean

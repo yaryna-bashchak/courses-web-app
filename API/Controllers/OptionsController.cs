@@ -16,7 +16,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<GetOptionDto>> AddOption(/*[FromForm]*/ AddOptionDto newOption)
+        public async Task<ActionResult<GetOptionDto>> AddOption(AddOptionDto newOption)
         {
             var result = await _optionsRepository.AddOption(newOption);
 
@@ -29,7 +29,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<GetOptionDto>> UpdateOption(int id, /*[FromForm]*/ UpdateOptionDto updatedOption)
+        public async Task<ActionResult<GetOptionDto>> UpdateOption(int id, UpdateOptionDto updatedOption)
         {
             var result = await _optionsRepository.UpdateOption(id, updatedOption);
 

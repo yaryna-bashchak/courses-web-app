@@ -46,12 +46,24 @@ export default function VideoWithCheckbox({ videoNumber }: Props) {
         return urlParts.join('/');
     }
 
+    const handleTimeUpdate = (event: React.SyntheticEvent<HTMLVideoElement>) => {
+        const video = event.currentTarget;
+        const timeRemaining = video.duration - video.currentTime;
+
+        if (!isCompleted && timeRemaining <= 10) {
+            const body = videoNumber === 0
+                ? { isTheoryCompleted: 1, courseId }
+                : { isPracticeCompleted: 1, courseId };
+            dispatch(updateLessonAsync({ id: parseInt(lessonId!), body }));
+        }
+    };
+
     return (
         <>
-            {videoKey ?
+            {videoKey &&
                 <div className="video-wrapper">
                     {showVideo ? (
-                        <video key={videoKey} style={{ maxWidth: '100%', maxHeight: 200, flex: '0 1 auto', marginBottom: 0 }} controls controlsList="nodownload" onContextMenu={handleContextMenu}>
+                        <video key={videoKey} style={{ maxWidth: '100%', maxHeight: 200, flex: '0 1 auto', marginBottom: 0 }} controls controlsList="nodownload" onContextMenu={handleContextMenu} onTimeUpdate={handleTimeUpdate}>
                             <source src={videoKey} type="video/mp4" />
                             Ваш браузер не підтримує відео тег.
                         </video>
@@ -78,7 +90,7 @@ export default function VideoWithCheckbox({ videoNumber }: Props) {
                             <Checkbox checked={isCompleted} onChange={handleCheckClick} />
                         }
                     />
-                </div> : null
+                </div>
             }
         </>
     );
