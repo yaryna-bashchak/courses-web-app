@@ -74,8 +74,9 @@ namespace API.Repositories.Implementation
 
         public async Task<Result<bool>> DeleteAllOptionsOfTest(int testId)
         {
-            var dbOptions = _context.Options
-                .Where(o => o.TestId == testId);
+            var dbOptions = await _context.Options
+                .Where(o => o.TestId == testId)
+                .ToListAsync();
 
             foreach (var option in dbOptions)
             {
