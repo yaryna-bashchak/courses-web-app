@@ -69,21 +69,21 @@ Here you can create a new course or edit existing. Only active courses are visib
 
 You can change any information, create new sections, lessons and so on.
 
-![image](https://github.com/user-attachments/assets/2eecfc6e-5d39-468d-a41f-0811db9528a1)
+<img width="767" alt="image" src="https://github.com/user-attachments/assets/2eecfc6e-5d39-468d-a41f-0811db9528a1" />
 
-![image](https://github.com/user-attachments/assets/4296b6e4-199f-4bb6-9df7-c9e7c8b0d38e)
+<img width="767" alt="image" src="https://github.com/user-attachments/assets/4296b6e4-199f-4bb6-9df7-c9e7c8b0d38e" />
 
-![image](https://github.com/user-attachments/assets/10fabc80-8df9-402d-a5b9-01deb21bef5b)
+<img width="767" alt="image" src="https://github.com/user-attachments/assets/10fabc80-8df9-402d-a5b9-01deb21bef5b" />
 
 Also create and edit tests.
 
-![image](https://github.com/user-attachments/assets/e71b3dad-8fa7-4245-9432-e93e259fcfaf)
+<img width="767" alt="image" src="https://github.com/user-attachments/assets/e71b3dad-8fa7-4245-9432-e93e259fcfaf" />
 
-![image](https://github.com/user-attachments/assets/6340e4e0-db73-40c0-bdfa-71ce226f8153)
+<img width="767" alt="image" src="https://github.com/user-attachments/assets/6340e4e0-db73-40c0-bdfa-71ce226f8153" />
 
 Share link to your course with others.
 
-<img width="870" alt="image" src="https://github.com/user-attachments/assets/8d891744-97a3-40bb-b322-43e8f6dc75e5" />
+<img width="767" alt="image" src="https://github.com/user-attachments/assets/8d891744-97a3-40bb-b322-43e8f6dc75e5" />
 
 ### 3) Take a Course
 
@@ -91,15 +91,15 @@ Share link to your course with others.
 
 Go to the main page and buy any course.
 
-<img width="884" alt="image" src="https://github.com/user-attachments/assets/a7f0892f-fd9f-4958-9d24-abf673714ea6" />
+<img width="767" alt="image" src="https://github.com/user-attachments/assets/a7f0892f-fd9f-4958-9d24-abf673714ea6" />
 
 Choose your plan.
 
-![image](https://github.com/user-attachments/assets/7099b89b-d9a6-43ed-a3ed-647ec149698a)
+<img width="767" alt="image" src="https://github.com/user-attachments/assets/7099b89b-d9a6-43ed-a3ed-647ec149698a" />
 
 Review purchase.
 
-![image](https://github.com/user-attachments/assets/aa576c96-b6fa-4525-9081-0732e8d07925)
+<img width="767" alt="image" src="https://github.com/user-attachments/assets/aa576c96-b6fa-4525-9081-0732e8d07925" />
 
 Enter card data. Use the following test card data:
 
@@ -109,13 +109,13 @@ Enter card data. Use the following test card data:
 >
 > CVV: any 3 digits
 
-![image](https://github.com/user-attachments/assets/57cc04b3-2eed-437f-a40c-76f87d217d03)
+<img width="767" alt="image" src="https://github.com/user-attachments/assets/57cc04b3-2eed-437f-a40c-76f87d217d03" />
 
 You should see the success message.
 
-![image](https://github.com/user-attachments/assets/fadb8ad1-cfe9-4e64-b199-e57ebce26f43)
+<img width="767" alt="image" src="https://github.com/user-attachments/assets/fadb8ad1-cfe9-4e64-b199-e57ebce26f43" />
 
-<img width="956" alt="image" src="https://github.com/user-attachments/assets/282141cf-d600-48cb-83f5-aaa36fee1704" />
+<img width="767" alt="image" src="https://github.com/user-attachments/assets/282141cf-d600-48cb-83f5-aaa36fee1704" />
 
 #### - Complete some lessons.
 
@@ -133,7 +133,7 @@ The lesson consists of videos and tests that should be completed after the lesso
 
 Complete the videos. Pass the tests.
 
-<img width="714" alt="image" src="https://github.com/user-attachments/assets/4ad4905f-118b-4241-b069-d9606bae0f26" />
+<img width="767" alt="image" src="https://github.com/user-attachments/assets/4ad4905f-118b-4241-b069-d9606bae0f26" />
 
 ![image](https://github.com/user-attachments/assets/23e13a2f-70ea-4eb8-b9b3-626ced948d69)
 
@@ -153,7 +153,7 @@ At the end, you will see your score.
 
 Also you can see what stage each lesson is at (completed, in progress, not started) and how many completed lessons are in each section.
 
-<img width="710" alt="image" src="https://github.com/user-attachments/assets/67ac99db-b17a-46a6-b4f0-c84497507723" />
+<img width="767" alt="image" src="https://github.com/user-attachments/assets/67ac99db-b17a-46a6-b4f0-c84497507723" />
 
 ### Mobile Design
 
