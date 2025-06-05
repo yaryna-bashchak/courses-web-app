@@ -5,6 +5,7 @@
 - <img src='https://github.com/yaryna-bashchak/maths-course/assets/90560209/27b894e3-2717-4629-902d-3f46090a7502' height='25'> **React** for the Front-end
 - <img src='https://github.com/yaryna-bashchak/maths-course/assets/90560209/e745a456-bd6a-4605-a679-9fd24fe14d36' height='25'> **Redux** for storing data from database on Front-end
 - <img src='https://github.com/yaryna-bashchak/maths-course/assets/90560209/38fe52c2-2880-43e3-92be-1b9da5601e77' height='18'> **Cloudinary** server for storing videos and images
+- <img src='https://github.com/user-attachments/assets/d090c1aa-b704-46d4-8c39-99db454e4fc5' height='23'> **Stripe** service for receiving payments
 
 ## About project
 
@@ -12,9 +13,7 @@ This is a Platform for creating and taking the courses. Here is a web API that h
  
 <!---More about business logic, database schema, component diagram you can see in [design document](https://docs.google.com/document/d/1bEvHXDxrGMU5eWxjBdT6eoA5OIkL18bKe9ypRxkODgo/edit?usp=sharing). --->
 
-[Deployed App](https://plan-znoshnika.fly.dev/course).
-
-But to run the project locally see "How to run".
+To run the project locally see "How to run".
 
 ## How to run
 - first of all, you need to install [.Net 8.0](https://dotnet.microsoft.com/en-us/download) (if you do not already have it)
@@ -34,40 +33,73 @@ If you want to **run the app**:
 
 <img width="800" alt="image" src="https://github.com/user-attachments/assets/0a1edc76-3b14-43cc-a8d8-5ff177cb05fb">
 
-- and run the API:
+- run the API:
 
 <code>$ dotnet restore </code></br>
 <code>$ dotnet run</code>
 
-- then open another terminal and run client side using the following commands:
+- run client side using the following commands:
 
 <code>$ cd client</code></br>
 <code>$ npm install</code></br>
 <code>$ npm start</code>
 
-After that, the home page of the app will be opened in your browser.
+- to receive webhook information from Stripe when payment is successful and grant the user access to the course, run the following command:
+
+<code>$ stripe listen -f http://localhost:5000/api/payments/webhook -e charge.succeeded</code>
 
 ## How to use
 
-### 1) Taking the Course
+### 1) Create your personal account
 
-#### - Create your own account, and "buy" courses.
-
-<img width="824" alt="image" src="https://github.com/user-attachments/assets/e91a6ead-768b-4b30-b477-f28f4c83efdd">
+<img width="821" alt="image" src="https://github.com/user-attachments/assets/4798e521-f86c-471b-8502-17eefdde17ee" />
 
 Then you should see this message about successful registretion.
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/07b8a4a6-403f-4705-acde-7ce6bf51df7f">
 
-Log in, go to the main page and "buy" some courses.
+### 2) Create a Course
 
-![image](https://github.com/user-attachments/assets/181569ef-fda7-48df-bfea-bab5398ac385)
+> Managing courses is allowed only to users with "Teacher" role. They have "Редагувати курси" tab on the top bar.
+
+Here you can create a new course or edit existing. Only active courses are visible for users.
+
+<img width="719" alt="image" src="https://github.com/user-attachments/assets/87e8bd04-5844-4835-844b-8e81b5edbe39" />
+<img width="767" alt="image" src="https://github.com/user-attachments/assets/f8f63a30-ebfd-448b-9bba-4eafff657ee2" />
+
+You can change any information, create new sections, lessons and so on.
+
+![image](https://github.com/user-attachments/assets/2eecfc6e-5d39-468d-a41f-0811db9528a1)
+
+![image](https://github.com/user-attachments/assets/4296b6e4-199f-4bb6-9df7-c9e7c8b0d38e)
+
+![image](https://github.com/user-attachments/assets/10fabc80-8df9-402d-a5b9-01deb21bef5b)
+
+Also create and edit tests.
+
+![image](https://github.com/user-attachments/assets/e71b3dad-8fa7-4245-9432-e93e259fcfaf)
+
+![image](https://github.com/user-attachments/assets/6340e4e0-db73-40c0-bdfa-71ce226f8153)
+
+Share link to your course with others.
+
+<img width="870" alt="image" src="https://github.com/user-attachments/assets/8d891744-97a3-40bb-b322-43e8f6dc75e5" />
+
+### 3) Take a Course
+
+#### - Buy a Course.
+
+Go to the main page and buy any course.
+
+<img width="884" alt="image" src="https://github.com/user-attachments/assets/a7f0892f-fd9f-4958-9d24-abf673714ea6" />
 
 Choose your plan.
-![image](https://github.com/user-attachments/assets/ddc9b615-ceaf-4ece-b6b4-d83249ad1227)
+
+![image](https://github.com/user-attachments/assets/7099b89b-d9a6-43ed-a3ed-647ec149698a)
 
 Review purchase.
-![image](https://github.com/user-attachments/assets/54de055d-cd5a-408f-8d67-45db12146e94)
+
+![image](https://github.com/user-attachments/assets/aa576c96-b6fa-4525-9081-0732e8d07925)
 
 Enter card data. Use the following test card data:
 
@@ -77,78 +109,63 @@ Enter card data. Use the following test card data:
 >
 > CVV: any 3 digits
 
-![image](https://github.com/user-attachments/assets/00d0bb0e-630d-42ee-bdd6-1ecf1093f6e3)
+![image](https://github.com/user-attachments/assets/57cc04b3-2eed-437f-a40c-76f87d217d03)
 
 You should see the success message.
 
-![image](https://github.com/user-attachments/assets/c143d29c-8073-496e-9421-978ebbbce88a)
+![image](https://github.com/user-attachments/assets/fadb8ad1-cfe9-4e64-b199-e57ebce26f43)
+
+<img width="956" alt="image" src="https://github.com/user-attachments/assets/282141cf-d600-48cb-83f5-aaa36fee1704" />
 
 #### - Complete some lessons.
 
 Go the course.
-![image](https://github.com/user-attachments/assets/cfef7612-6825-45c0-815b-53b21a889d5c)
+
+![image](https://github.com/user-attachments/assets/368d42f2-3f71-446d-942f-1e4032802d9e)
 
 Choose the lesson and start learning.
 
-![image](https://github.com/user-attachments/assets/22380a13-3de6-49c1-bdaa-8c47b56adf04)
+![image](https://github.com/user-attachments/assets/9501218e-0f4e-4fcd-81df-b5993b9bf33d)
 
 The lesson consists of videos and tests that should be completed after the lesson.
 
-![image](https://github.com/user-attachments/assets/c857951d-abe0-4953-bd67-a2aae23aa4ca)
+![image](https://github.com/user-attachments/assets/ea15e221-7444-4847-86d8-110c02a07b79)
 
-Complete the videos.
+Complete the videos. Pass the tests.
 
-![image](https://github.com/user-attachments/assets/9ccc0880-b6ca-475f-a659-ecc9839f914b)
+<img width="714" alt="image" src="https://github.com/user-attachments/assets/4ad4905f-118b-4241-b069-d9606bae0f26" />
 
-Pass the tests.
-
-<img width="770" alt="image" src="https://github.com/user-attachments/assets/bdac0ff6-be3e-4739-9acd-f4982f7fcb12">
-
-![image](https://github.com/user-attachments/assets/0641ebf1-d37a-45b9-86dc-209113592ece)
+![image](https://github.com/user-attachments/assets/23e13a2f-70ea-4eb8-b9b3-626ced948d69)
 
 After answering, you immediately see whether you are right or not.
 
-![image](https://github.com/user-attachments/assets/9e030643-77b2-4e61-a31e-c383e4bde5a1)
+![image](https://github.com/user-attachments/assets/e90b6526-3633-4ab3-9f00-e7eaf9c3eba7)
 
-![image](https://github.com/user-attachments/assets/dd1f5f8d-a3c5-4722-85e9-26f21752d93a)
+![image](https://github.com/user-attachments/assets/b0aca66f-1dd7-4b04-863c-55e06fcdb157)
 
 At the end, you will see your score.
 
-![image](https://github.com/user-attachments/assets/1e76014b-3b3e-48f8-9d9a-485ff6a02bc9)
+![image](https://github.com/user-attachments/assets/0cbcae94-7eed-4da3-ad41-d9754fbe1af2)
 
-<img width="710" alt="image" src="https://github.com/user-attachments/assets/2e711566-df7c-41b9-b11e-b34967aa5c45">
+![image](https://github.com/user-attachments/assets/8fb0f0fd-f0e8-4ba4-85b9-d6561787ec75)
 
 #### - Check your progress
 
 Also you can see what stage each lesson is at (completed, in progress, not started) and how many completed lessons are in each section.
 
-![image](https://github.com/user-attachments/assets/30951991-71e6-4108-98d8-537d08db8884)
+<img width="710" alt="image" src="https://github.com/user-attachments/assets/67ac99db-b17a-46a6-b4f0-c84497507723" />
 
-### 2) Creating a Course
-
-> Managing courses is allowed only to users with "Admin" role. They have "Редагувати курси" tab on the top bar.
-
-Here you can create a new course or edit some.
-
-![image](https://github.com/yaryna-bashchak/maths-course/assets/90560209/de204bf4-dbe8-48f3-8edc-aafda6a6c4fc)
-
-You can change any information, create new sections, lessons and so on.
-
-<img src='https://github.com/yaryna-bashchak/maths-course/assets/90560209/d40b8914-9642-4c33-8cee-bb4fdd512659' width='700'>
-
-<img src='https://github.com/yaryna-bashchak/maths-course/assets/90560209/d4e7dfba-fcdb-457e-a9de-d12b25e59441' width='700'>
-
-### Adaptive Design
+### Mobile Design
 
 The app is also adapted to smaller devices such as a phone or tablet. For example, for smaller screens, a side menu appears in the header, which repeats the same buttons that are on the large screens.
 The content of the pages is also appropriate.
 
-<img src='https://github.com/yaryna-bashchak/maths-course/assets/90560209/b558a488-40e6-4d7f-9826-db64ae77e608' width='300'>
-<img src='https://github.com/yaryna-bashchak/maths-course/assets/90560209/c233840c-e493-4daa-bcab-b0e6e2328c31' width='300'>
-<img src='https://github.com/yaryna-bashchak/maths-course/assets/90560209/e44944ff-3285-4a14-a4dc-71de98179781' width='300'>
-<img src='https://github.com/yaryna-bashchak/maths-course/assets/90560209/03be35e4-8e5f-43ec-93e7-7d63286adf73' width='300'>
-<img src='https://github.com/yaryna-bashchak/maths-course/assets/90560209/7fcbce25-5814-4883-902c-9e8ca4eef35a' width='300'>
-<img src='https://github.com/yaryna-bashchak/maths-course/assets/90560209/ab723440-a562-4b8c-8257-1c86e9d6e3a8' width='300'>
+<img src='https://github.com/user-attachments/assets/9307dbcf-9f1e-4499-8317-ed110483731b' width='300'>
+<img src='https://github.com/user-attachments/assets/ef1856a4-f91d-4917-94b8-3d365569c144' width='300'>
+<img src='https://github.com/user-attachments/assets/60440186-ce96-4b61-9696-23b65c5070d0' width='300'>
+<img src='https://github.com/user-attachments/assets/6e7b5ff9-18d8-44ef-b249-4208e6528ad1' width='300'>
+<img src='https://github.com/user-attachments/assets/4a2f0aee-461b-4979-8a6f-0f3bf87e1308' width='300'>
+<img src='https://github.com/user-attachments/assets/49419df1-fc23-4e2d-ab02-df4b0fa478e9' width='300'>
 
 ### Web API
 
