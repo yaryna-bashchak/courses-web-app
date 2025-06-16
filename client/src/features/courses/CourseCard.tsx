@@ -1,4 +1,4 @@
-import { Card, CardMedia, CardContent, Typography, CardActions, Button, Box } from "@mui/material";
+import { Card, CardContent, Typography, CardActions, Button, Box } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../../app/store/configureStore";
 import { courseSelectors } from "./coursesSlice";
